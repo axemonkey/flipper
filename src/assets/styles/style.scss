@@ -1,6 +1,17 @@
 $perspective: 300px;
 $time: 0.5s;
 
+#debug {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: none;
+}
+
+#list {
+	display: none;
+}
+
 * {
 	margin: 0;
 	padding: 0;

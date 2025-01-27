@@ -4,9 +4,9 @@
 	const C = {
 	  // constants
 	  size: 150,
-	  coverCount: 86,
 	  auto: true,
-	  autoDelay: 1000
+	  autoDelay: 1000,
+	  coversPath: '/public/images/covers/'
 	};
 	const loop = () => {
 	  const wCoverNumber = Math.floor(Math.random() * C.count);
@@ -24,7 +24,7 @@
 	  }
 	  divElement.addEventListener('animationend', () => {
 	    divElement.classList.remove('flippingl');
-	    divElement.style.backgroundImage = `url(/public/images/covers/cover${wCover}.jpg)`;
+	    divElement.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
 	    divElement.classList.add('flippedl');
 	    window.setTimeout(() => {
 	      divElement.classList.remove('flippedl');
@@ -44,11 +44,10 @@
 	      element.style.height = `${C.size}px`;
 	      element.style.left = `${C.size * r}px`;
 	      element.style.top = `${C.size * c}px`;
-	      element.style.backgroundImage = `url(/public/images/covers/cover${wCover}.jpg)`;
+	      element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
-	      element.dataset.cover = wCover;
 	      C.container.append(element);
 	      count++;
 	    }
@@ -59,7 +58,18 @@
 	    loop();
 	  }
 	};
+	const getFilenames = () => {
+	  const els = document.querySelectorAll('#list li');
+	  const covers = [];
+	  for (const el of els) {
+	    covers.push(el.textContent);
+	  }
+	  return covers;
+	};
 	const setup = () => {
+	  C.files = getFilenames();
+	  console.log(C.files);
+	  C.coverCount = C.files.length;
 	  C.container = document.querySelector('main');
 	  const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	  const vph = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);

@@ -1,7 +1,22 @@
+const fg = require('fast-glob');
+
 module.exports = function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy('src/public');
 	// eleventyConfig.addPassthroughCopy({ 'src/robots.txt': '/robots.txt' });
+
 	eleventyConfig.setUseGitIgnore(false);
+
+	const coversSrc = fg.sync(['src/assets/images/covers/**/*.{jpg,jpeg,png,gif,webp}']);
+	eleventyConfig.addCollection('covers', () => {
+		const covers = [];
+
+		for (const cover of coversSrc) {
+			const coverBits = cover.split('/');
+			covers.push(coverBits[coverBits.length - 1]);
+		}
+		return covers;
+	});
+
 	eleventyConfig.setServerOptions({
 		// liveReload: false,
 		watch: [
@@ -12,8 +27,8 @@ module.exports = function (eleventyConfig) {
 
 	return {
 		dir: {
-			includes: "_includes",
-			layouts: "_layouts",
+			includes: '_includes',
+			layouts: '_layouts',
 		}
 	}
 };
