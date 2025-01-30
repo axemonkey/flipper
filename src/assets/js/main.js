@@ -1,6 +1,6 @@
 const C = { // constants
 	size: 150,
-	auto: false,
+	auto: true,
 	autoDelay: 1000,
 	coversPath: '/public/images/covers/',
 };
@@ -30,6 +30,7 @@ const changeCover = element => {
 	divElement.addEventListener('animationend', () => {
 		divElement.classList.remove('flippingl');
 		divElement.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
+		divElement.dataset.filename = C.files[wCover];
 		divElement.classList.add('flippedl');
 		window.setTimeout(() => {
 			divElement.classList.remove('flippedl');

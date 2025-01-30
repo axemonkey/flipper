@@ -4,13 +4,17 @@
 	const C = {
 	  // constants
 	  size: 150,
-	  auto: false,
+	  auto: true,
 	  autoDelay: 1000,
 	  coversPath: '/public/images/covers/'
 	};
-	const obj = {
-	  divs: [],
-	  filenames: []
+	const loop = () => {
+	  const wCoverNumber = Math.floor(Math.random() * C.count);
+	  const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
+	  changeCover(wCover);
+	  window.setTimeout(() => {
+	    loop();
+	  }, C.autoDelay);
 	};
 	const changeCover = element => {
 	  const divElement = element;
@@ -21,20 +25,13 @@
 	  divElement.addEventListener('animationend', () => {
 	    divElement.classList.remove('flippingl');
 	    divElement.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
+	    divElement.dataset.filename = C.files[wCover];
 	    divElement.classList.add('flippedl');
 	    window.setTimeout(() => {
 	      divElement.classList.remove('flippedl');
 	    }, 650);
 	  });
 	  divElement.classList.add('flippingl');
-	};
-	const attachListeners = () => {
-	  for (const div of obj.divs) {
-	    div.addEventListener('click', event => {
-	      const element = event.target;
-	      changeCover(element);
-	    });
-	  }
 	};
 	const fillContainer = () => {
 	  let count = 0;
@@ -54,14 +51,13 @@
 	      element.dataset.count = count;
 	      element.dataset.filename = C.files[wCover];
 	      C.container.append(element);
-	      obj.divs.push(element);
 	      count++;
 	    }
 	  }
 	  C.count = count;
 	  console.log(`count: ${count}`);
 	  {
-	    attachListeners();
+	    loop();
 	  }
 	};
 	const getFilenames = () => {
@@ -70,7 +66,6 @@
 	  for (const el of els) {
 	    covers.push(el.textContent);
 	  }
-	  obj.filenames = covers;
 	  return covers;
 	};
 	const setup = () => {
