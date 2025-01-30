@@ -5,7 +5,8 @@
 	  // constants
 	  size: 150,
 	  auto: true,
-	  autoDelay: 1000,
+	  autoDelay: 300,
+	  // 1000
 	  coversPath: '/public/images/covers/'
 	};
 	const loop = () => {
@@ -18,7 +19,9 @@
 	};
 	const changeCover = element => {
 	  const divElement = element;
-	  const wCover = Math.floor(Math.random() * C.coverCount);
+	  let tempCount = C.current || 0;
+	  // const wCover = Math.floor(Math.random() * C.coverCount);
+	  const wCover = tempCount;
 	  if (element.classList.contains('flippedl') || element.classList.contains('flippingl')) {
 	    return;
 	  }
@@ -26,7 +29,9 @@
 	    divElement.classList.remove('flippingl');
 	    divElement.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
 	    divElement.dataset.filename = C.files[wCover];
+	    console.log(`${wCover}: ${C.files[wCover]}`);
 	    divElement.classList.add('flippedl');
+	    C.current = tempCount + 1;
 	    window.setTimeout(() => {
 	      divElement.classList.remove('flippedl');
 	    }, 650);
