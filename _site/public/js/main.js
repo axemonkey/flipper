@@ -1,12 +1,13 @@
 const C = { // constants
 	size: 150,
-	auto: true,
+	auto: false,
 	autoDelay: 1000,
 	coversPath: '/public/images/covers/',
 };
 
 const obj = {
 	divs: [],
+	filenames: [],
 };
 
 const loop = () => {
@@ -65,6 +66,7 @@ const fillContainer = () => {
 			element.dataset.row = `row${r}`;
 			element.dataset.col = `col${c}`;
 			element.dataset.count = count;
+			element.dataset.filename = C.files[wCover];
 
 			C.container.append(element);
 			obj.divs.push(element);
@@ -89,12 +91,13 @@ const getFilenames = () => {
 	for (const el of els) {
 		covers.push(el.textContent);
 	}
+	obj.filenames = covers;
 	return covers;
 };
 
 const setup = () => {
 	C.files = getFilenames();
-	console.log(C.files);
+	// console.log(C.files);
 	C.coverCount = C.files.length;
 	C.container = document.querySelector('main');
 	const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
