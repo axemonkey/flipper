@@ -103,8 +103,10 @@ const setup = () => {
 	C.container = document.querySelector('main');
 	const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	const vph = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-	const rowLength = Math.floor(vpw / C.size);
-	const colHeight = Math.floor(vph / C.size);
+	const availWidth = vpw - 50;
+	const availHeight = vph - 50;
+	const rowLength = Math.floor(availWidth / C.size);
+	const colHeight = Math.floor(availHeight / C.size);
 
 	C.contWidth = rowLength * C.size;
 	C.contHeight = colHeight * C.size;
@@ -115,7 +117,7 @@ const setup = () => {
 	C.rowCount = Math.floor(C.contWidth / C.size);
 	C.colCount = Math.floor(C.contHeight / C.size);
 
-	console.log(`vpw: ${vpw}, vph: ${vph}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
+	console.log(`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
 
 	fillContainer();
 };
