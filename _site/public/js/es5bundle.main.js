@@ -1,6 +1,21 @@
 (function () {
 	'use strict';
 
+	/*
+	TODOs:
+	* figure out why occasionally a flip doesn't happen
+	* investigate lazy load or something? maybe load before flip?
+	* repaint on window resize
+	* have a tiny footer paragraph that shows the current flip details
+	* some kind of design?
+	* investigate different methods of changing, other than flip? (fade, zoom etc)
+	* add controls for
+	  * switching modes
+		* delay time in auto mode
+		* size of tiles
+	* in auto mode, have a popup on click that shows album details
+	*/
+
 	const C = {
 	  // constants
 	  size: 150,
