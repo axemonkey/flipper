@@ -3,17 +3,25 @@
 
 	/*
 	TODOs:
-	* figure out why occasionally a flip doesn't happen
+	* find a way of setting the time in JS or CSS, not both
+	* have two time values, one for transition duration and one for gap between transitions
 	* investigate lazy load or something? maybe load before flip?
 	* repaint on window resize
-	* have a tiny footer paragraph that shows the current flip details
 	* some kind of design?
+	* favicon
 	* investigate different methods of changing, other than flip? (fade, zoom etc)
 	* add controls for
-	  * switching modes
+		* switching modes
 		* delay time in auto mode
 		* size of tiles
 	* in auto mode, have a popup on click that shows album details
+	* in auto mode, add a pause button
+	*/
+
+	/*
+	TO DONE:
+	* figure out why occasionally a flip doesn't happen
+	* have a tiny footer that shows the current flip details
 	*/
 
 	const C = {
@@ -21,7 +29,15 @@
 	  size: 150,
 	  auto: true,
 	  autoDelay: 1000,
-	  coversPath: '/public/images/covers/'
+	  coversPath: '/public/images/covers/',
+	  forceSmall: false
+	};
+	const stripExtension = filename => {
+	  const lastDotIndex = filename.lastIndexOf('.');
+	  return filename.slice(0, lastDotIndex);
+	};
+	const unspace = string => {
+	  return string.replace(/-/gm, ' ');
 	};
 	const loop = () => {
 	  const wCoverNumber = Math.floor(Math.random() * C.count);
@@ -31,16 +47,26 @@
 	    loop();
 	  }, C.autoDelay);
 	};
+	const showInFooter = wFile => {
+	  const strippedFile = stripExtension(wFile);
+	  // console.log(strippedFile);
+	  const parts = strippedFile.split('-----');
+	  const footerElement = document.querySelector('footer');
+	  footerElement.textContent = `${unspace(parts[0])} - ${unspace(parts[1])}`;
+	};
 	const changeCover = element => {
 	  const divElement = element;
 	  const wCover = Math.floor(Math.random() * C.coverCount);
+	  const wFile = C.files[wCover];
 	  if (element.classList.contains('flippedl') || element.classList.contains('flippingl')) {
+	    console.log('*** burn');
 	    return;
 	  }
+	  showInFooter(wFile);
 	  divElement.addEventListener('animationend', () => {
 	    divElement.classList.remove('flippingl');
-	    divElement.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
-	    divElement.dataset.filename = C.files[wCover];
+	    divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+	    divElement.dataset.filename = wFile;
 	    divElement.classList.add('flippedl');
 	    window.setTimeout(() => {
 	      divElement.classList.remove('flippedl');
@@ -92,8 +118,8 @@
 	  const vph = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 	  const availWidth = vpw - 50;
 	  const availHeight = vph - 50;
-	  const rowLength = Math.floor(availWidth / C.size);
-	  const colHeight = Math.floor(availHeight / C.size);
+	  let rowLength = Math.floor(availWidth / C.size);
+	  let colHeight = Math.floor(availHeight / C.size);
 	  C.contWidth = rowLength * C.size;
 	  C.contHeight = colHeight * C.size;
 	  C.container.style.width = `${C.contWidth}px`;
