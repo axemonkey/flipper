@@ -3,6 +3,7 @@ TODOs:
 * find a way of setting the time in JS or CSS, not both
 * have two time values, one for transition duration and one for gap between transitions
 * investigate lazy load or something? maybe load before flip?
+* make initial container fill optional
 * repaint on window resize
 * some kind of design?
 * favicon
