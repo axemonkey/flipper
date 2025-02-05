@@ -34,7 +34,8 @@
 	  perspective: '300px',
 	  coversPath: '/public/images/covers/',
 	  forceSmall: false,
-	  resetting: false
+	  resetting: false,
+	  mode: 'flip' // flip || fade || zoom
 	};
 	const stripExtension = filename => {
 	  const lastDotIndex = filename.lastIndexOf('.');
@@ -76,7 +77,8 @@
 	  }], {
 	    duration: C.transitionDuration / 2,
 	    iterations: 1,
-	    fill: 'forwards'
+	    fill: 'forwards',
+	    easing: 'ease-in'
 	  });
 	  flipForward.cancel();
 	  const flipBack = divElement.animate([{
@@ -86,7 +88,8 @@
 	  }], {
 	    duration: C.transitionDuration / 2,
 	    iterations: 1,
-	    fill: 'forwards'
+	    fill: 'forwards',
+	    easing: 'ease-out'
 	  });
 	  flipBack.cancel();
 	  flipForward.onfinish = () => {

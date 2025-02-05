@@ -31,6 +31,7 @@ const C = { // constants
 	coversPath: '/public/images/covers/',
 	forceSmall: false,
 	resetting: false,
+	mode: 'flip', // flip || fade || zoom
 };
 
 const obj = {
@@ -86,6 +87,7 @@ const changeCover = element => {
 		duration: C.transitionDuration / 2,
 		iterations: 1,
 		fill: 'forwards',
+		easing: 'ease-in',
 	});
 	flipForward.cancel();
 
@@ -96,6 +98,7 @@ const changeCover = element => {
 		duration: C.transitionDuration / 2,
 		iterations: 1,
 		fill: 'forwards',
+		easing: 'ease-out',
 	});
 	flipBack.cancel();
 
