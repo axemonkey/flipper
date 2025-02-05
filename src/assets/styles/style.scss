@@ -1,5 +1,3 @@
-$perspective: 300px;
-
 #debug {
 	position: absolute;
 	left: 0;
@@ -60,43 +58,6 @@ main {
 	z-index: 10;
 }
 
-.c.flippedl,
-.c.flippingl {
-	animation-name: flipped;
-	animation-iteration-count: once;
-	animation-direction: forward;
-	animation-timing-function: linear;
-
-	// backface-visibility: hidden;
-	z-index: 2000;
-}
-
 .c.moving {
 	z-index: 2000;
-}
-
-.c.flippingl {
-	animation-name: flipping;
-}
-
-@keyframes flipped {
-	0% {
-		transform: perspective($perspective) rotateY(90deg);
-	}
-
-	100% {
-		transform: perspective($perspective) rotateY(0deg);
-		animation-timing-function: ease-out;
-	}
-}
-
-@keyframes flipping {
-	0% {
-		transform: perspective($perspective) rotateY(0deg);
-	}
-
-	100% {
-		transform: perspective($perspective) rotateY(-90deg);
-		animation-timing-function: ease-out;
-	}
 }

@@ -69,11 +69,6 @@ const changeCover = element => {
 	const wFile = C.files[wCover];
 	console.log(`changeCover has picked ${wFile}`);
 
-	if (element.classList.contains('flippedl') || element.classList.contains('flippingl')) {
-		console.log('*** burn');
-		return;
-	}
-
 	const currentBg = divElement.dataset.filename;
 	console.log(`incumbent bg is ${currentBg}`);;
 
