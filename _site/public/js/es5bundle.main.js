@@ -31,11 +31,12 @@
 	  auto: true,
 	  autoDelay: 1000,
 	  transitionDuration: 800,
-	  perspective: '300px',
 	  coversPath: '/public/images/covers/',
 	  forceSmall: false,
 	  resetting: false,
-	  mode: 'flip' // flip || fade || zoom
+	  mode: 'flip',
+	  // flip || fade || zoom || slide || random
+	  initialFill: false
 	};
 	const stripExtension = filename => {
 	  const lastDotIndex = filename.lastIndexOf('.');
@@ -47,8 +48,15 @@
 	const loop = () => {
 	  const wCoverNumber = Math.floor(Math.random() * C.count);
 	  const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
-	  console.log(`loop has picked cover number ${wCoverNumber}`);
+	  // console.log(`loop has picked cover number ${wCoverNumber}`);
 	  changeCover(wCover);
+	};
+	const end = () => {
+	  if (!C.resetting) {
+	    window.setTimeout(() => {
+	      loop();
+	    }, C.autoDelay);
+	  }
 	};
 	const showInFooter = wFile => {
 	  const strippedFile = stripExtension(wFile);
@@ -57,19 +65,16 @@
 	  const footerElement = document.querySelector('footer');
 	  footerElement.textContent = `${unspace(parts[0])} - ${unspace(parts[1])}`;
 	};
-	const changeCover = element => {
+	const flipCover = (element, wFile) => {
+	  const PERSPECTIVE = '300px';
 	  const divElement = element;
-	  const wCover = Math.floor(Math.random() * C.coverCount);
-	  const wFile = C.files[wCover];
-	  console.log(`changeCover has picked ${wFile}`);
 	  const currentBg = divElement.dataset.filename;
-	  console.log(`incumbent bg is ${currentBg}`);
-	  divElement.style.backgroundImage = `url(${C.coversPath}${currentBg}), url(${C.coversPath}${wFile})`;
 	  divElement.classList.add('moving');
+	  divElement.style.backgroundImage = `url(${C.coversPath}${currentBg}), url(${C.coversPath}${wFile})`;
 	  const flipForward = divElement.animate([{
-	    transform: `perspective(${C.perspective}) rotateY(0deg)`
+	    transform: `perspective(${PERSPECTIVE}) rotateY(0deg)`
 	  }, {
-	    transform: `perspective(${C.perspective}) rotateY(-90deg)`
+	    transform: `perspective(${PERSPECTIVE}) rotateY(-90deg)`
 	  }], {
 	    duration: C.transitionDuration / 2,
 	    iterations: 1,
@@ -78,9 +83,9 @@
 	  });
 	  flipForward.cancel();
 	  const flipBack = divElement.animate([{
-	    transform: `perspective(${C.perspective}) rotateY(90deg)`
+	    transform: `perspective(${PERSPECTIVE}) rotateY(90deg)`
 	  }, {
-	    transform: `perspective(${C.perspective}) rotateY(0deg)`
+	    transform: `perspective(${PERSPECTIVE}) rotateY(0deg)`
 	  }], {
 	    duration: C.transitionDuration / 2,
 	    iterations: 1,
@@ -96,33 +101,85 @@
 	  };
 	  flipBack.onfinish = () => {
 	    divElement.classList.remove('moving');
-	    if (!C.resetting) {
-	      window.setTimeout(() => {
-	        loop();
-	      }, C.autoDelay);
-	    }
+	    end();
 	  };
 	  flipForward.play();
+	};
+	const fadeCover = (element, wFile) => {
+	  const divElement = element;
+	  const lPos = divElement.style.left;
+	  const tPos = divElement.style.top;
+	  const newDiv = document.createElement('div');
+	  newDiv.classList.add('c');
+	  newDiv.classList.add('moving');
+	  newDiv.style.width = `${C.size}px`;
+	  newDiv.style.height = `${C.size}px`;
+	  newDiv.style.left = lPos;
+	  newDiv.style.top = tPos;
+	  newDiv.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+	  newDiv.style.opacity = 0;
+	  C.container.append(newDiv);
+	  const fadeIn = newDiv.animate([{
+	    opacity: 0
+	  }, {
+	    opacity: 1
+	  }], {
+	    duration: C.transitionDuration,
+	    iterations: 1,
+	    fill: 'forwards',
+	    easing: 'ease-in'
+	  });
+	  fadeIn.cancel();
+	  fadeIn.onfinish = () => {
+	    divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+	    divElement.dataset.filename = wFile;
+	    newDiv.remove();
+	    end();
+	  };
+	  showInFooter(wFile);
+	  fadeIn.play();
+	};
+	const zoomCover = (divElement, wFile) => {
+	  console.log(`haven't written zoomCover yet`);
+	  console.log(divElement, wFile);
+	};
+	const changeCover = element => {
+	  const divElement = element;
+	  const wCover = Math.floor(Math.random() * C.coverCount);
+	  const wFile = C.files[wCover];
+
+	  // console.log(`changeCover has picked ${wFile}`);
+	  // console.log(`incumbent bg is ${currentBg}`);
+
+	  switch (C.mode) {
+	    case 'fade':
+	      fadeCover(divElement, wFile);
+	      break;
+	    case 'zoom':
+	      zoomCover(divElement, wFile);
+	      break;
+	    default:
+	      // flip
+	      flipCover(divElement, wFile);
+	  }
 	};
 	const fillContainer = () => {
 	  let count = 0;
 	  for (let c = 0; c < C.colCount; c++) {
 	    for (let r = 0; r < C.rowCount; r++) {
-	      // console.log(`row ${r}, col ${c}`);
-	      const wCover = Math.floor(Math.random() * C.coverCount);
 	      const element = document.createElement('div');
 	      element.classList.add('c');
 	      element.style.width = `${C.size}px`;
 	      element.style.height = `${C.size}px`;
 	      element.style.left = `${C.size * r}px`;
 	      element.style.top = `${C.size * c}px`;
-	      element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
-	      // element.style['animation-duration'] = `${C.transitionDuration / 2000}s`;
-
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
-	      element.dataset.filename = C.files[wCover];
+	      {
+	        element.style.backgroundImage = `url(/public/images/covers/_-----_.png)`;
+	        element.dataset.filename = '_-----_.png';
+	      }
 	      C.container.append(element);
 	      count++;
 	    }

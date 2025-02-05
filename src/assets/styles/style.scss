@@ -33,7 +33,7 @@ html {
 }
 
 body {
-	background-color: #eee;
+	background-color: #fff;
 	font-family: Helvetica, sans-serif;
 	display: flex;
 	align-items: center;
@@ -60,4 +60,8 @@ main {
 
 .c.moving {
 	z-index: 2000;
+}
+
+.findIt {
+	border: 5px solid limegreen;
 }
