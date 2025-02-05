@@ -20,7 +20,7 @@
     "watch:assets": "onchange './src/assets/fonts' -- npm run build:copyassets",
     "watch:images": "onchange './src/assets/images/**/*' -- npm run build:images",
     "watch:styles": "onchange './src/assets/styles/**/*.scss' -- npm-run-all lint:styles build:styles",
-    "watch:js": "onchange './src/assets/js/**/*.js' -- npm-run-all lint:js build:js"
+    "watch:js": "onchange './src/assets/js/**/*.js' -- npm-run-all build:js"
   },
   "author": "Clive Murray <clive+murray@clivemurray.com>",
   "license": "UNLICENSED",

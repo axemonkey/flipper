@@ -1,5 +1,4 @@
 $perspective: 300px;
-$time: 0.5s;
 
 #debug {
 	position: absolute;
@@ -42,7 +41,6 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	z-index: 10;
 }
 
 main {
@@ -65,12 +63,15 @@ main {
 .c.flippedl,
 .c.flippingl {
 	animation-name: flipped;
-	animation-duration: $time;
 	animation-iteration-count: once;
 	animation-direction: forward;
 	animation-timing-function: linear;
 
 	// backface-visibility: hidden;
+	z-index: 2000;
+}
+
+.c.moving {
 	z-index: 2000;
 }
 

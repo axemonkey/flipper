@@ -3,10 +3,8 @@
 
 	/*
 	TODOs:
-	* find a way of setting the time in JS or CSS, not both
-	* have two time values, one for transition duration and one for gap between transitions
 	* investigate lazy load or something? maybe load before flip?
-	* repaint on window resize
+	* make initial container fill optional
 	* some kind of design?
 	* favicon
 	* investigate different methods of changing, other than flip? (fade, zoom etc)
@@ -22,6 +20,9 @@
 	TO DONE:
 	* figure out why occasionally a flip doesn't happen
 	* have a tiny footer that shows the current flip details
+	* find a way of setting the time in JS or CSS, not both
+	* have two time values, one for transition duration and one for gap between transitions
+	* repaint on window resize
 	*/
 
 	const C = {
@@ -29,8 +30,11 @@
 	  size: 150,
 	  auto: true,
 	  autoDelay: 1000,
+	  transitionDuration: 800,
+	  perspective: '300px',
 	  coversPath: '/public/images/covers/',
-	  forceSmall: false
+	  forceSmall: false,
+	  resetting: false
 	};
 	const stripExtension = filename => {
 	  const lastDotIndex = filename.lastIndexOf('.');
@@ -42,10 +46,8 @@
 	const loop = () => {
 	  const wCoverNumber = Math.floor(Math.random() * C.count);
 	  const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
+	  console.log(`loop has picked cover number ${wCoverNumber}`);
 	  changeCover(wCover);
-	  window.setTimeout(() => {
-	    loop();
-	  }, C.autoDelay);
 	};
 	const showInFooter = wFile => {
 	  const strippedFile = stripExtension(wFile);
@@ -58,21 +60,50 @@
 	  const divElement = element;
 	  const wCover = Math.floor(Math.random() * C.coverCount);
 	  const wFile = C.files[wCover];
+	  console.log(`changeCover has picked ${wFile}`);
 	  if (element.classList.contains('flippedl') || element.classList.contains('flippingl')) {
 	    console.log('*** burn');
 	    return;
 	  }
-	  showInFooter(wFile);
-	  divElement.addEventListener('animationend', () => {
-	    divElement.classList.remove('flippingl');
-	    divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
-	    divElement.dataset.filename = wFile;
-	    divElement.classList.add('flippedl');
-	    window.setTimeout(() => {
-	      divElement.classList.remove('flippedl');
-	    }, 650);
+	  const currentBg = divElement.dataset.filename;
+	  console.log(`incumbent bg is ${currentBg}`);
+	  divElement.style.backgroundImage = `url(${C.coversPath}${currentBg}), url(${C.coversPath}${wFile})`;
+	  divElement.classList.add('moving');
+	  const flipForward = divElement.animate([{
+	    transform: `perspective(${C.perspective}) rotateY(0deg)`
+	  }, {
+	    transform: `perspective(${C.perspective}) rotateY(-90deg)`
+	  }], {
+	    duration: C.transitionDuration / 2,
+	    iterations: 1,
+	    fill: 'forwards'
 	  });
-	  divElement.classList.add('flippingl');
+	  flipForward.cancel();
+	  const flipBack = divElement.animate([{
+	    transform: `perspective(${C.perspective}) rotateY(90deg)`
+	  }, {
+	    transform: `perspective(${C.perspective}) rotateY(0deg)`
+	  }], {
+	    duration: C.transitionDuration / 2,
+	    iterations: 1,
+	    fill: 'forwards'
+	  });
+	  flipBack.cancel();
+	  flipForward.onfinish = () => {
+	    divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+	    showInFooter(wFile);
+	    divElement.dataset.filename = wFile;
+	    flipBack.play();
+	  };
+	  flipBack.onfinish = () => {
+	    divElement.classList.remove('moving');
+	    if (!C.resetting) {
+	      window.setTimeout(() => {
+	        loop();
+	      }, C.autoDelay);
+	    }
+	  };
+	  flipForward.play();
 	};
 	const fillContainer = () => {
 	  let count = 0;
@@ -87,6 +118,8 @@
 	      element.style.left = `${C.size * r}px`;
 	      element.style.top = `${C.size * c}px`;
 	      element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
+	      // element.style['animation-duration'] = `${C.transitionDuration / 2000}s`;
+
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
@@ -133,6 +166,15 @@
 	  console.log(`let's go`);
 	  setup();
 	};
+	const reset = () => {
+	  C.resetting = true;
+	  document.querySelector('main').replaceChildren();
+	  window.setTimeout(() => {
+	    C.resetting = false;
+	    setup();
+	  }, C.autoDelay + C.transitionDuration);
+	};
 	window.addEventListener('load', init);
+	window.addEventListener('resize', reset);
 
 })();
