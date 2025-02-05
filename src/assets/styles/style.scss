@@ -5,6 +5,12 @@
 	display: none;
 }
 
+div {
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
 footer {
 	position: absolute;
 	left: 0;
@@ -58,10 +64,20 @@ main {
 	z-index: 10;
 }
 
-.c.moving {
+.moving {
 	z-index: 2000;
+}
+
+.clipIt {
+	overflow: hidden;
 }
 
 .findIt {
 	border: 5px solid limegreen;
+}
+
+.plughole {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

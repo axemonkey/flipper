@@ -22,6 +22,15 @@ TO DONE:
 * repaint on window resize
 */
 
+const MODES = [
+	'flip',
+	'fade',
+	'zoomIn',
+	'zoomOut',
+	'slide',
+	'random', // must be last
+];
+
 const C = { // constants
 	size: 150,
 	auto: true,
@@ -30,8 +39,8 @@ const C = { // constants
 	coversPath: '/public/images/covers/',
 	forceSmall: false,
 	resetting: false,
-	mode: 'flip', // flip || fade || zoom || slide || random
-	initialFill: false,
+	mode: 'flip', // flip || fade || zoomIn || zoomOut || slide || random
+	initialFill: true,
 };
 
 const obj = {
@@ -155,9 +164,154 @@ const fadeCover = (element, wFile) => {
 	fadeIn.play();
 };
 
-const zoomCover = (divElement, wFile) => {
-	console.log(`haven't written zoomCover yet`);
-	console.log(divElement, wFile);
+const zoomInCover = (element, wFile) => {
+	const divElement = element;
+
+	divElement.classList.add('plughole');
+
+	const newDiv = document.createElement('div');
+	newDiv.classList.add('moving');
+	newDiv.style.width = `0`;
+	newDiv.style.height = `0`;
+	newDiv.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+
+	divElement.append(newDiv);
+
+	const zoomIn = newDiv.animate([
+		{
+			width: 0,
+			height: 0,
+		},
+		{
+			width: `${C.size}px`,
+			height: `${C.size}px`,
+		},
+	], {
+		duration: C.transitionDuration,
+		iterations: 1,
+		fill: 'forwards',
+		easing: 'ease-in',
+	});
+	zoomIn.cancel();
+
+	zoomIn.onfinish = () => {
+		divElement.classList.remove('plughole');
+		divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+		divElement.dataset.filename = wFile;
+		newDiv.remove();
+		end();
+	};
+
+	showInFooter(wFile);
+
+	zoomIn.play();
+};
+
+const zoomOutCover = (element, wFile) => {
+	const divElement = element;
+	const currFile = divElement.dataset.filename;
+
+	divElement.classList.add('plughole');
+
+	const newDiv = document.createElement('div');
+	newDiv.classList.add('moving');
+	newDiv.style.width = `${C.size}px`;
+	newDiv.style.height = `${C.size}px`;
+	newDiv.style.backgroundImage = `url(${C.coversPath}${currFile})`;
+
+	divElement.append(newDiv);
+
+	divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+
+	const zoomOut = newDiv.animate([
+		{
+			width: `${C.size}px`,
+			height: `${C.size}px`,
+		},
+		{
+			width: 0,
+			height: 0,
+		},
+	], {
+		duration: C.transitionDuration,
+		iterations: 1,
+		fill: 'forwards',
+		easing: 'ease-in',
+	});
+	zoomOut.cancel();
+
+	zoomOut.onfinish = () => {
+		divElement.classList.remove('plughole');
+		// divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+		divElement.dataset.filename = wFile;
+		newDiv.remove();
+		end();
+	};
+
+	showInFooter(wFile);
+
+	zoomOut.play();
+};
+
+const slideCover = (element, wFile) => {
+	const divElement = element;
+	const currFile = divElement.dataset.filename;
+
+	const newDiv = document.createElement('div');
+	newDiv.classList.add('moving');
+	newDiv.style.position = 'absolute';
+	newDiv.style.left = 0;
+	newDiv.style.top = 0;
+	newDiv.style.width = `${C.size * 2}px`;
+	newDiv.style.height = `${C.size}px`;
+	const leftDiv = document.createElement('div');
+	leftDiv.classList.add('moving');
+	leftDiv.style.position = 'absolute';
+	leftDiv.style.left = 0;
+	leftDiv.style.top = 0;
+	leftDiv.style.width = `${C.size}px`;
+	leftDiv.style.height = `${C.size}px`;
+	leftDiv.style.backgroundImage = `url(${C.coversPath}${currFile})`;
+	const rightDiv = document.createElement('div');
+	rightDiv.classList.add('moving');
+	rightDiv.style.position = 'absolute';
+	rightDiv.style.left = `${C.size}px`;
+	rightDiv.style.top = 0;
+	rightDiv.style.width = `${C.size}px`;
+	rightDiv.style.height = `${C.size}px`;
+	rightDiv.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+
+	newDiv.append(leftDiv);
+	newDiv.append(rightDiv);
+	divElement.classList.add('clipIt');
+	divElement.append(newDiv);
+
+	const slide = newDiv.animate([
+		{
+			left: 0,
+		},
+		{
+			left: `-${C.size}px`,
+		},
+	], {
+		duration: C.transitionDuration,
+		iterations: 1,
+		fill: 'forwards',
+		easing: 'ease-in',
+	});
+	slide.cancel();
+
+	slide.onfinish = () => {
+		divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+		divElement.dataset.filename = wFile;
+		divElement.classList.remove('clipIt');
+		newDiv.remove();
+		end();
+	};
+
+	showInFooter(wFile);
+
+	slide.play();
 };
 
 const changeCover = element => {
@@ -166,14 +320,31 @@ const changeCover = element => {
 	const wFile = C.files[wCover];
 
 	// console.log(`changeCover has picked ${wFile}`);
-	// console.log(`incumbent bg is ${currentBg}`);
 
-	switch (C.mode) {
+	if (!MODES.includes(C.mode)) {
+		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
+		return;
+	}
+
+	let whichMode = C.mode;
+	if (whichMode === 'random') {
+		whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
+	}
+
+	// console.log(`whichMode: ${whichMode}`);
+
+	switch (whichMode) {
 	case 'fade':
 		fadeCover(divElement, wFile);
 		break;
-	case 'zoom':
-		zoomCover(divElement, wFile);
+	case 'zoomIn':
+		zoomInCover(divElement, wFile);
+		break;
+	case 'zoomOut':
+		zoomOutCover(divElement, wFile);
+		break;
+	case 'slide':
+		slideCover(divElement, wFile);
 		break;
 	default: // flip
 		flipCover(divElement, wFile);
@@ -258,7 +429,7 @@ const setup = () => {
 
 	if (C.forceSmall) {
 		rowLength = 2;
-		colHeight = 3;
+		colHeight = 2;
 	}
 
 	C.contWidth = rowLength * C.size;
@@ -287,7 +458,7 @@ const reset = () => {
 	window.setTimeout(() => {
 		C.resetting = false;
 		setup();
-	}, C.autoDelay + C.transitionDuration);
+	}, (C.autoDelay + C.transitionDuration) * 2);
 };
 
 window.addEventListener('load', init);
