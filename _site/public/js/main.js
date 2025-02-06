@@ -1,29 +1,30 @@
-import {C} from './modules/settings.js';
 import {
-	changeCover,
+	C,
+	initSettings,
+} from './modules/settings.js';
+import {
 	loop,
 } from './modules/loop-functions.js';
+import {
+	attachListeners,
+} from './modules/click-functions.js';
 
 /*
 TODOs:
-* add controls for
-	* switching modes
-	* transition duration
-	* delay time in auto mode
-	* size of tiles
-	* initial fill, or nah
-* break transition functions into their own files
+* once controls exist, allow configuration in URL
 * some simple maths to make sure that there are at least 2 rows and 2 cols
-* spin transition?
+* spin transition
+* reveal transition
 * some kind of design?
   * nicer background than grey box
 	* title
 	* page bg maybe
 * favicon
-* in auto mode, have a popup on click that shows album details
+* in auto mode, have a popup on click that shows album details (and pauses)
 * in auto mode, add a pause button
 * investigate lazy load or something? maybe load before flip?
 * further crazy transitions, like blinds? checkerboard?
+* add a control to adjust size of tiles?
 */
 
 /*
@@ -36,20 +37,17 @@ TO DONE:
 * investigate different methods of changing, other than flip? (fade, zoom etc)
 * exclude the white image from covers
 * make initial container fill optional
+* break transition functions into their own files
+* add controls for
+	* switching modes
+	* transition duration
+	* delay time in auto mode
+	* initial fill, or nah
 */
 
 const obj = {
 	divs: [],
 	filenames: [],
-};
-
-const attachListeners = () => {
-	for (const div of obj.divs) {
-		div.addEventListener('click', event => {
-			const element = event.target;
-			changeCover(element);
-		});
-	}
 };
 
 const fillContainer = () => {
@@ -70,13 +68,12 @@ const fillContainer = () => {
 			element.dataset.col = `col${c}`;
 			element.dataset.count = count;
 
+			let imageFile = '_-----_.png'; // blank white
 			if (C.initialFill) {
-				element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
-				element.dataset.filename = C.files[wCover];
-			} else {
-				element.style.backgroundImage = `url(/public/images/covers/_-----_.png)`;
-				element.dataset.filename = '_-----_.png';
+				imageFile = `${C.files[wCover]}`;
 			}
+			element.style.backgroundImage = `url(${C.coversPath}${imageFile})`;
+			element.dataset.filename = imageFile;
 
 			C.container.append(element);
 			obj.divs.push(element);
@@ -137,6 +134,7 @@ const setup = () => {
 	console.log(`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
 
 	fillContainer();
+	initSettings();
 };
 
 const init = () => {
@@ -162,3 +160,8 @@ const reset = () => {
 
 window.addEventListener('load', init);
 window.addEventListener('resize', reset);
+
+export {
+	obj,
+	reset,
+};

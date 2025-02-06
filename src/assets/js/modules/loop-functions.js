@@ -11,14 +11,18 @@ const changeCover = element => {
 	const wCover = Math.floor(Math.random() * C.coverCount);
 	const wFile = C.files[wCover];
 
+	if (!C.mode) {
+		C.mode = C.initialMode;
+	}
+
 	// console.log(`changeCover has picked ${wFile}`);
 
-	if (!MODES.includes(C.initialMode)) {
-		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.initialMode}`);
+	if (!MODES.includes(C.mode)) {
+		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
 		return;
 	}
 
-	let whichMode = C.initialMode;
+	let whichMode = C.mode;
 	if (whichMode === 'random') {
 		whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
 	}

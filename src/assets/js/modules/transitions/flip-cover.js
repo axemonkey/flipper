@@ -15,7 +15,7 @@ const flipCover = (element, wFile) => {
 		{transform: `perspective(${PERSPECTIVE}) rotateY(0deg)`},
 		{transform: `perspective(${PERSPECTIVE}) rotateY(-90deg)`},
 	], {
-		duration: C.transitionDuration / 2,
+		duration: Number(C.transitionDuration) / 2,
 		iterations: 1,
 		fill: 'forwards',
 		easing: 'ease-in',
@@ -26,7 +26,7 @@ const flipCover = (element, wFile) => {
 		{transform: `perspective(${PERSPECTIVE}) rotateY(90deg)`},
 		{transform: `perspective(${PERSPECTIVE}) rotateY(0deg)`},
 	], {
-		duration: C.transitionDuration / 2,
+		duration: Number(C.transitionDuration) / 2,
 		iterations: 1,
 		fill: 'forwards',
 		easing: 'ease-out',

@@ -1,18 +1,5 @@
-(function () {
+(function (exports) {
 	'use strict';
-
-	const C = {
-	  // settings
-	  size: 150,
-	  auto: true,
-	  autoDelay: 1000,
-	  transitionDuration: 800,
-	  coversPath: '/public/images/covers/',
-	  forceSmall: false,
-	  resetting: false,
-	  initialMode: 'flip',
-	  initialFill: true
-	};
 
 	const MODES = ['flip', 'fade', 'zoomIn', 'zoomOut', 'slide', 'random' // must be last
 	];
@@ -28,7 +15,7 @@
 	  }, {
 	    transform: `perspective(${PERSPECTIVE}) rotateY(-90deg)`
 	  }], {
-	    duration: C.transitionDuration / 2,
+	    duration: Number(C.transitionDuration) / 2,
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-in'
@@ -39,7 +26,7 @@
 	  }, {
 	    transform: `perspective(${PERSPECTIVE}) rotateY(0deg)`
 	  }], {
-	    duration: C.transitionDuration / 2,
+	    duration: Number(C.transitionDuration) / 2,
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-out'
@@ -77,7 +64,7 @@
 	  }, {
 	    opacity: 1
 	  }], {
-	    duration: C.transitionDuration,
+	    duration: Number(C.transitionDuration),
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-in'
@@ -109,7 +96,7 @@
 	    width: `${C.size}px`,
 	    height: `${C.size}px`
 	  }], {
-	    duration: C.transitionDuration,
+	    duration: Number(C.transitionDuration),
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-in'
@@ -144,7 +131,7 @@
 	    width: 0,
 	    height: 0
 	  }], {
-	    duration: C.transitionDuration,
+	    duration: Number(C.transitionDuration),
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-in'
@@ -196,7 +183,7 @@
 	  }, {
 	    left: `-${C.size}px`
 	  }], {
-	    duration: C.transitionDuration,
+	    duration: Number(C.transitionDuration),
 	    iterations: 1,
 	    fill: 'forwards',
 	    easing: 'ease-in'
@@ -217,14 +204,20 @@
 	  const divElement = element;
 	  const wCover = Math.floor(Math.random() * C.coverCount);
 	  const wFile = C.files[wCover];
+	  if (!C.mode) {
+	    C.mode = C.initialMode;
+	  }
 
 	  // console.log(`changeCover has picked ${wFile}`);
 
-	  if (!MODES.includes(C.initialMode)) {
-	    console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.initialMode}`);
+	  if (!MODES.includes(C.mode)) {
+	    console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
 	    return;
 	  }
-	  let whichMode = C.initialMode;
+	  let whichMode = C.mode;
+	  if (whichMode === 'random') {
+	    whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
+	  }
 
 	  // console.log(`whichMode: ${whichMode}`);
 
@@ -256,7 +249,7 @@
 	  changeCover(wCover);
 	};
 	const end = () => {
-	  if (!C.resetting) {
+	  if (C.auto && !C.resetting) {
 	    window.setTimeout(() => {
 	      loop();
 	    }, C.autoDelay);
@@ -277,26 +270,128 @@
 	  return string.replace(/-/gm, ' ');
 	};
 
+	const attachListeners = () => {
+	  for (const div of obj.divs) {
+	    div.addEventListener('click', event => {
+	      const element = event.target;
+	      changeCover(element);
+	    });
+	  }
+	};
+
+	const C = {
+	  // settings
+	  size: 150,
+	  auto: true,
+	  autoDelay: 1000,
+	  transitionDuration: 1000,
+	  coversPath: '/public/images/covers/',
+	  forceSmall: false,
+	  resetting: false,
+	  initialMode: 'flip',
+	  initialFill: true
+	};
+	const initialSettings = window.structuredClone(C);
+	console.log(initialSettings);
+	const initModeDropdown = () => {
+	  const element = document.querySelector('#settings-mode');
+	  element.addEventListener('change', () => {
+	    if (element.value === 'auto') {
+	      C.auto = true;
+	      loop();
+	    } else {
+	      C.auto = false;
+	      attachListeners();
+	    }
+	  });
+	};
+	const initStartDropdown = () => {
+	  const element = document.querySelector('#settings-start');
+	  element.addEventListener('change', () => {
+	    C.initialFill = element.value === 'filled';
+	    reset();
+	  });
+	};
+	const initTransitionDropdown = () => {
+	  const element = document.querySelector('#settings-transition');
+	  element.addEventListener('change', () => {
+	    C.mode = element.value;
+	  });
+	};
+	const initDurationSlider = () => {
+	  const element = document.querySelector('#settings-duration');
+	  element.addEventListener('change', () => {
+	    C.transitionDuration = element.value;
+	  });
+	};
+	const initDelaySlider = () => {
+	  const element = document.querySelector('#settings-delay');
+	  element.addEventListener('change', () => {
+	    C.autoDelay = element.value;
+	  });
+	};
+	const showSettings = () => {
+	  document.querySelector('#settings').classList.remove('u-hide');
+	};
+	const hideSettings = () => {
+	  document.querySelector('#settings').classList.add('u-hide');
+	};
+	const resetSettings = () => {
+	  const loopRestart = !C.auto;
+	  C.auto = initialSettings.auto;
+	  C.autoDelay = initialSettings.autoDelay;
+	  C.transitionDuration = initialSettings.transitionDuration;
+	  C.initialMode = initialSettings.initialMode;
+	  C.initialFill = initialSettings.initialFill;
+	  C.mode = initialSettings.initialMode;
+	  console.log(C);
+	  document.querySelector('#settings-mode').value = initialSettings.auto ? 'auto' : 'click';
+	  document.querySelector('#settings-start').value = initialSettings.initialFill ? 'filled' : 'empty';
+	  document.querySelector('#settings-transition').value = initialSettings.initialMode;
+	  document.querySelector('#settings-duration').value = Number(initialSettings.transitionDuration);
+	  document.querySelector('#settings-delay').value = Number(initialSettings.autoDelay);
+	  if (loopRestart) {
+	    loop();
+	  }
+	};
+	const initButtons = () => {
+	  document.querySelector('#settings-button').addEventListener('click', event => {
+	    showSettings();
+	    event.target.classList.add('u-hide');
+	  });
+	  document.querySelector('#settings-close').addEventListener('click', () => {
+	    hideSettings();
+	    document.querySelector('#settings-button').classList.remove('u-hide');
+	  });
+	  document.querySelector('#settings-reset').addEventListener('click', () => {
+	    resetSettings();
+	  });
+	};
+	const initSettings = () => {
+	  initModeDropdown();
+	  initStartDropdown();
+	  initTransitionDropdown();
+	  initDurationSlider();
+	  initDelaySlider();
+	  initButtons();
+	};
+
 	/*
 	TODOs:
-	* add controls for
-		* switching modes
-		* transition duration
-		* delay time in auto mode
-		* size of tiles
-		* initial fill, or nah
-	* break transition functions into their own files
+	* once controls exist, allow configuration in URL
 	* some simple maths to make sure that there are at least 2 rows and 2 cols
-	* spin transition?
+	* spin transition
+	* reveal transition
 	* some kind of design?
 	  * nicer background than grey box
 		* title
 		* page bg maybe
 	* favicon
-	* in auto mode, have a popup on click that shows album details
+	* in auto mode, have a popup on click that shows album details (and pauses)
 	* in auto mode, add a pause button
 	* investigate lazy load or something? maybe load before flip?
 	* further crazy transitions, like blinds? checkerboard?
+	* add a control to adjust size of tiles?
 	*/
 
 	/*
@@ -309,6 +404,12 @@
 	* investigate different methods of changing, other than flip? (fade, zoom etc)
 	* exclude the white image from covers
 	* make initial container fill optional
+	* break transition functions into their own files
+	* add controls for
+		* switching modes
+		* transition duration
+		* delay time in auto mode
+		* initial fill, or nah
 	*/
 
 	const obj = {
@@ -330,10 +431,12 @@
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
-	      {
-	        element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
-	        element.dataset.filename = C.files[wCover];
+	      let imageFile = '_-----_.png'; // blank white
+	      if (C.initialFill) {
+	        imageFile = `${C.files[wCover]}`;
 	      }
+	      element.style.backgroundImage = `url(${C.coversPath}${imageFile})`;
+	      element.dataset.filename = imageFile;
 	      C.container.append(element);
 	      obj.divs.push(element);
 	      count++;
@@ -341,8 +444,10 @@
 	  }
 	  C.count = count;
 	  console.log(`count: ${count}`);
-	  {
+	  if (C.auto) {
 	    loop();
+	  } else {
+	    attachListeners();
 	  }
 	};
 	const getFilenames = () => {
@@ -366,6 +471,10 @@
 	  const availHeight = vph - C.size;
 	  let rowLength = Math.max(Math.floor(availWidth / C.size), 2);
 	  let colHeight = Math.floor(availHeight / C.size);
+	  if (C.forceSmall) {
+	    rowLength = 2;
+	    colHeight = 2;
+	  }
 	  C.contWidth = rowLength * C.size;
 	  C.contHeight = colHeight * C.size;
 	  C.container.style.width = `${C.contWidth}px`;
@@ -374,6 +483,7 @@
 	  C.colCount = Math.floor(C.contHeight / C.size);
 	  console.log(`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
 	  fillContainer();
+	  initSettings();
 	};
 	const init = () => {
 	  console.log(`let's go`);
@@ -394,4 +504,9 @@
 	window.addEventListener('load', init);
 	window.addEventListener('resize', reset);
 
-})();
+	exports.obj = obj;
+	exports.reset = reset;
+
+	return exports;
+
+})({});

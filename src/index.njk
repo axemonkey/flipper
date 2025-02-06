@@ -1,35 +1,21 @@
 ---
 title: Flipper
+layout: main.njk
 ---
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>{{ title | safe }}</title>
-		<meta charset="utf-8">
-		<meta http-equiv="Content-type" content="text/html;charset=utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1">
+<header>
+	<button id="settings-button">Settings</button>
+</header>
 
-		<link rel="stylesheet" type="text/css" href="/public/css/style.css">
-	</head>
+<main></main>
 
-	<body>
-		<main>
+{% include "settings.njk" %}
 
+<p id="debug">Covers: {{ collections.covers.length }} - {{collections.covers[5]}}</p>
 
+<ul id="list">
+	{% for cover in collections.covers %}
+	<li>{{ cover }}</li>
+	{% endfor %}
+</ul>
 
-		</main>
-
-		<p id="debug">Covers: {{ collections.covers.length }} - {{collections.covers[5]}}</p>
-
-		<ul id="list">
-			{% for cover in collections.covers %}
-			<li>{{ cover }}</li>
-			{% endfor %}
-		</ul>
-
-		<footer></footer>
-
-		<script type="module" src="/public/js/main.js"></script>
-	</body>
-
-</html>
+<footer></footer>

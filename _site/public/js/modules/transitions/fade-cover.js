@@ -25,7 +25,7 @@ const fadeCover = (element, wFile) => {
 		{opacity: 0},
 		{opacity: 1},
 	], {
-		duration: C.transitionDuration,
+		duration: Number(C.transitionDuration),
 		iterations: 1,
 		fill: 'forwards',
 		easing: 'ease-in',

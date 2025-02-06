@@ -30,7 +30,7 @@ const zoomOutCover = (element, wFile) => {
 			height: 0,
 		},
 	], {
-		duration: C.transitionDuration,
+		duration: Number(C.transitionDuration),
 		iterations: 1,
 		fill: 'forwards',
 		easing: 'ease-in',

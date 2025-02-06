@@ -45,7 +45,7 @@ const slideCover = (element, wFile) => {
 			left: `-${C.size}px`,
 		},
 	], {
-		duration: C.transitionDuration,
+		duration: Number(C.transitionDuration),
 		iterations: 1,
 		fill: 'forwards',
 		easing: 'ease-in',
