@@ -337,7 +337,7 @@
 	  C.coverCount = C.files.length;
 	  C.container = document.querySelector('main');
 	  const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-	  const vph = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+	  const vph = document.body.clientHeight;
 	  const availWidth = vpw - 50;
 	  const availHeight = vph - 50;
 	  let rowLength = Math.floor(availWidth / C.size);
