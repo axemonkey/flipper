@@ -1,6 +1,5 @@
 /*
 TODOs:
-* make initial container fill optional
 * some kind of design?
 * favicon
 * add controls for
@@ -8,6 +7,7 @@ TODOs:
 	* transition duration
 	* delay time in auto mode
 	* size of tiles
+	* initial fill, or nah
 * in auto mode, have a popup on click that shows album details
 * in auto mode, add a pause button
 * investigate lazy load or something? maybe load before flip?
@@ -22,6 +22,7 @@ TO DONE:
 * repaint on window resize
 * investigate different methods of changing, other than flip? (fade, zoom etc)
 * exclude the white image from covers
+* make initial container fill optional
 */
 
 const MODES = [
