@@ -85,3 +85,19 @@ main {
 	justify-content: center;
 	align-items: center;
 }
+
+.resetFadeOut {
+	animation-name: fade-out;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}

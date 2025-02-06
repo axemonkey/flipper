@@ -1,6 +1,11 @@
 /*
 TODOs:
+* spin transition?
 * some kind of design?
+  * nicer background than grey box
+	* title
+	* page bg maybe
+* break transition functions into their own files
 * favicon
 * add controls for
 	* switching modes
@@ -11,6 +16,7 @@ TODOs:
 * in auto mode, have a popup on click that shows album details
 * in auto mode, add a pause button
 * investigate lazy load or something? maybe load before flip?
+* further crazy transitions, like blinds? checkerboard?
 */
 
 /*
@@ -61,6 +67,9 @@ const unspace = string => {
 };
 
 const loop = () => {
+	if (C.resetting) {
+		return;
+	}
 	const wCoverNumber = Math.floor(Math.random() * C.count);
 	const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
 	// console.log(`loop has picked cover number ${wCoverNumber}`);
@@ -421,13 +430,14 @@ const setup = () => {
 	// console.log(C.files);
 	C.coverCount = C.files.length;
 	C.container = document.querySelector('main');
+	C.container.replaceChildren();
 
 	const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	const vph = document.body.clientHeight;
-	const availWidth = vpw - 50;
-	const availHeight = vph - 100;
+	const availWidth = vpw - C.size;
+	const availHeight = vph - C.size;
 
-	let rowLength = Math.floor(availWidth / C.size);
+	let rowLength = Math.max(Math.floor(availWidth / C.size), 2);
 	let colHeight = Math.floor(availHeight / C.size);
 
 	if (C.forceSmall) {
@@ -456,12 +466,18 @@ const init = () => {
 };
 
 const reset = () => {
-	C.resetting = true;
-	document.querySelector('main').replaceChildren();
-	window.setTimeout(() => {
-		C.resetting = false;
-		setup();
-	}, (C.autoDelay + C.transitionDuration) * 2);
+	if (!C.resetting) {
+		C.resetting = true;
+
+		for (const div of obj.divs) {
+			div.classList.add('resetFadeOut');
+		}
+
+		window.setTimeout(() => {
+			C.resetting = false;
+			setup();
+		}, (C.autoDelay + C.transitionDuration) * 2);
+	}
 };
 
 window.addEventListener('load', init);
