@@ -425,7 +425,7 @@ const setup = () => {
 	const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	const vph = document.body.clientHeight;
 	const availWidth = vpw - 50;
-	const availHeight = vph - 50;
+	const availHeight = vph - 100;
 
 	let rowLength = Math.floor(availWidth / C.size);
 	let colHeight = Math.floor(availHeight / C.size);
