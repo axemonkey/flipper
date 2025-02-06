@@ -292,7 +292,6 @@
 	  initialFill: true
 	};
 	const initialSettings = window.structuredClone(C);
-	console.log(initialSettings);
 	const initModeDropdown = () => {
 	  const element = document.querySelector('#settings-mode');
 	  element.addEventListener('change', () => {
@@ -344,7 +343,6 @@
 	  C.initialMode = initialSettings.initialMode;
 	  C.initialFill = initialSettings.initialFill;
 	  C.mode = initialSettings.initialMode;
-	  console.log(C);
 	  document.querySelector('#settings-mode').value = initialSettings.auto ? 'auto' : 'click';
 	  document.querySelector('#settings-start').value = initialSettings.initialFill ? 'filled' : 'empty';
 	  document.querySelector('#settings-transition').value = initialSettings.initialMode;
