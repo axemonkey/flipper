@@ -1,3 +1,4 @@
+import {C} from './modules/settings.js';
 import {
 	changeCover,
 	loop,
@@ -36,18 +37,6 @@ TO DONE:
 * exclude the white image from covers
 * make initial container fill optional
 */
-
-const C = { // constants
-	size: 150,
-	auto: true,
-	autoDelay: 1000,
-	transitionDuration: 800,
-	coversPath: '/public/images/covers/',
-	forceSmall: false,
-	resetting: false,
-	mode: 'flip', // flip || fade || zoomIn || zoomOut || slide || random
-	initialFill: true,
-};
 
 const obj = {
 	divs: [],

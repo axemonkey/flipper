@@ -1,6 +1,19 @@
 (function () {
 	'use strict';
 
+	const C = {
+	  // settings
+	  size: 150,
+	  auto: true,
+	  autoDelay: 1000,
+	  transitionDuration: 800,
+	  coversPath: '/public/images/covers/',
+	  forceSmall: false,
+	  resetting: false,
+	  initialMode: 'flip',
+	  initialFill: true
+	};
+
 	const MODES = ['flip', 'fade', 'zoomIn', 'zoomOut', 'slide', 'random' // must be last
 	];
 
@@ -207,14 +220,11 @@
 
 	  // console.log(`changeCover has picked ${wFile}`);
 
-	  if (!MODES.includes(C.mode)) {
-	    console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
+	  if (!MODES.includes(C.initialMode)) {
+	    console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.initialMode}`);
 	    return;
 	  }
-	  let whichMode = C.mode;
-	  if (whichMode === 'random') {
-	    whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
-	  }
+	  let whichMode = C.initialMode;
 
 	  // console.log(`whichMode: ${whichMode}`);
 
@@ -246,7 +256,7 @@
 	  changeCover(wCover);
 	};
 	const end = () => {
-	  if (C.auto && !C.resetting) {
+	  if (!C.resetting) {
 	    window.setTimeout(() => {
 	      loop();
 	    }, C.autoDelay);
@@ -301,48 +311,35 @@
 	* make initial container fill optional
 	*/
 
-	const C$1 = {
-	  // constants
-	  size: 150,
-	  auto: true,
-	  autoDelay: 1000,
-	  transitionDuration: 800,
-	  coversPath: '/public/images/covers/',
-	  forceSmall: false,
-	  resetting: false,
-	  mode: 'flip',
-	  // flip || fade || zoomIn || zoomOut || slide || random
-	  initialFill: true
-	};
 	const obj = {
 	  divs: [],
 	  filenames: []
 	};
 	const fillContainer = () => {
 	  let count = 0;
-	  for (let c = 0; c < C$1.colCount; c++) {
-	    for (let r = 0; r < C$1.rowCount; r++) {
+	  for (let c = 0; c < C.colCount; c++) {
+	    for (let r = 0; r < C.rowCount; r++) {
 	      // console.log(`row ${r}, col ${c}`);
-	      const wCover = Math.floor(Math.random() * C$1.coverCount);
+	      const wCover = Math.floor(Math.random() * C.coverCount);
 	      const element = document.createElement('div');
 	      element.classList.add('c');
-	      element.style.width = `${C$1.size}px`;
-	      element.style.height = `${C$1.size}px`;
-	      element.style.left = `${C$1.size * r}px`;
-	      element.style.top = `${C$1.size * c}px`;
+	      element.style.width = `${C.size}px`;
+	      element.style.height = `${C.size}px`;
+	      element.style.left = `${C.size * r}px`;
+	      element.style.top = `${C.size * c}px`;
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
 	      {
-	        element.style.backgroundImage = `url(${C$1.coversPath}${C$1.files[wCover]})`;
-	        element.dataset.filename = C$1.files[wCover];
+	        element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
+	        element.dataset.filename = C.files[wCover];
 	      }
-	      C$1.container.append(element);
+	      C.container.append(element);
 	      obj.divs.push(element);
 	      count++;
 	    }
 	  }
-	  C$1.count = count;
+	  C.count = count;
 	  console.log(`count: ${count}`);
 	  {
 	    loop();
@@ -358,23 +355,23 @@
 	  return covers;
 	};
 	const setup = () => {
-	  C$1.files = getFilenames();
+	  C.files = getFilenames();
 	  // console.log(C.files);
-	  C$1.coverCount = C$1.files.length;
-	  C$1.container = document.querySelector('main');
-	  C$1.container.replaceChildren();
+	  C.coverCount = C.files.length;
+	  C.container = document.querySelector('main');
+	  C.container.replaceChildren();
 	  const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	  const vph = document.body.clientHeight;
-	  const availWidth = vpw - C$1.size;
-	  const availHeight = vph - C$1.size;
-	  let rowLength = Math.max(Math.floor(availWidth / C$1.size), 2);
-	  let colHeight = Math.floor(availHeight / C$1.size);
-	  C$1.contWidth = rowLength * C$1.size;
-	  C$1.contHeight = colHeight * C$1.size;
-	  C$1.container.style.width = `${C$1.contWidth}px`;
-	  C$1.container.style.height = `${C$1.contHeight}px`;
-	  C$1.rowCount = Math.floor(C$1.contWidth / C$1.size);
-	  C$1.colCount = Math.floor(C$1.contHeight / C$1.size);
+	  const availWidth = vpw - C.size;
+	  const availHeight = vph - C.size;
+	  let rowLength = Math.max(Math.floor(availWidth / C.size), 2);
+	  let colHeight = Math.floor(availHeight / C.size);
+	  C.contWidth = rowLength * C.size;
+	  C.contHeight = colHeight * C.size;
+	  C.container.style.width = `${C.contWidth}px`;
+	  C.container.style.height = `${C.contHeight}px`;
+	  C.rowCount = Math.floor(C.contWidth / C.size);
+	  C.colCount = Math.floor(C.contHeight / C.size);
 	  console.log(`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
 	  fillContainer();
 	};
@@ -383,15 +380,15 @@
 	  setup();
 	};
 	const reset = () => {
-	  if (!C$1.resetting) {
-	    C$1.resetting = true;
+	  if (!C.resetting) {
+	    C.resetting = true;
 	    for (const div of obj.divs) {
 	      div.classList.add('resetFadeOut');
 	    }
 	    window.setTimeout(() => {
-	      C$1.resetting = false;
+	      C.resetting = false;
 	      setup();
-	    }, (C$1.autoDelay + C$1.transitionDuration) * 2);
+	    }, (C.autoDelay + C.transitionDuration) * 2);
 	  }
 	};
 	window.addEventListener('load', init);

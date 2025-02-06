@@ -1,3 +1,4 @@
+import {C} from '../settings.js';
 import {
 	end,
 	showInFooter,

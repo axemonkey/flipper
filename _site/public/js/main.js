@@ -12,6 +12,7 @@ TODOs:
 	* delay time in auto mode
 	* size of tiles
 	* initial fill, or nah
+* break transition functions into their own files
 * some simple maths to make sure that there are at least 2 rows and 2 cols
 * spin transition?
 * some kind of design?
@@ -35,7 +36,6 @@ TO DONE:
 * investigate different methods of changing, other than flip? (fade, zoom etc)
 * exclude the white image from covers
 * make initial container fill optional
-* break transition functions into their own files
 */
 
 const obj = {

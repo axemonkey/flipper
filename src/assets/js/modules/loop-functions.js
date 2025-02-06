@@ -1,9 +1,10 @@
-import {MODES} from './constants';
-import {flipCover} from './transitions/flip-cover';
-import {fadeCover} from './transitions/fade-cover';
-import {zoomInCover} from './transitions/zoom-in-cover';
-import {zoomOutCover} from './transitions/zoom-out-cover';
-import {slideCover} from './transitions/slide-cover';
+import {C} from './settings.js';
+import {MODES} from './constants.js';
+import {flipCover} from './transitions/flip-cover.js';
+import {fadeCover} from './transitions/fade-cover.js';
+import {zoomInCover} from './transitions/zoom-in-cover.js';
+import {zoomOutCover} from './transitions/zoom-out-cover.js';
+import {slideCover} from './transitions/slide-cover.js';
 
 const changeCover = element => {
 	const divElement = element;
@@ -12,12 +13,12 @@ const changeCover = element => {
 
 	// console.log(`changeCover has picked ${wFile}`);
 
-	if (!MODES.includes(C.mode)) {
-		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
+	if (!MODES.includes(C.initialMode)) {
+		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.initialMode}`);
 		return;
 	}
 
-	let whichMode = C.mode;
+	let whichMode = C.initialMode;
 	if (whichMode === 'random') {
 		whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
 	}
