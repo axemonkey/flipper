@@ -6,8 +6,8 @@
     "mocha": true
   },
   "globals": {
-    "MicroModal": "readonly",
-    "moment": "readonly"
+    "C": "readonly",
+    "MODES": "readonly"
   },
   "ignorePatterns": ["**/vendor/**/*.js", "**/public/**/*.js"],
   "parserOptions": {

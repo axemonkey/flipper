@@ -1,89 +1,9 @@
 (function () {
 	'use strict';
 
-	/*
-	TODOs:
-	* spin transition?
-	* some simple maths to make sure that there are at least 2 rows and 2 cols
-	* some kind of design?
-	  * nicer background than grey box
-		* title
-		* page bg maybe
-	* break transition functions into their own files
-	* favicon
-	* add controls for
-		* switching modes
-		* transition duration
-		* delay time in auto mode
-		* size of tiles
-		* initial fill, or nah
-	* in auto mode, have a popup on click that shows album details
-	* in auto mode, add a pause button
-	* investigate lazy load or something? maybe load before flip?
-	* further crazy transitions, like blinds? checkerboard?
-	*/
-
-	/*
-	TO DONE:
-	* figure out why occasionally a flip doesn't happen
-	* have a tiny footer that shows the current flip details
-	* find a way of setting the time in JS or CSS, not both
-	* have two time values, one for transition duration and one for gap between transitions
-	* repaint on window resize
-	* investigate different methods of changing, other than flip? (fade, zoom etc)
-	* exclude the white image from covers
-	* make initial container fill optional
-	*/
-
 	const MODES = ['flip', 'fade', 'zoomIn', 'zoomOut', 'slide', 'random' // must be last
 	];
-	const C = {
-	  // constants
-	  size: 150,
-	  auto: true,
-	  autoDelay: 1000,
-	  transitionDuration: 800,
-	  coversPath: '/public/images/covers/',
-	  forceSmall: false,
-	  resetting: false,
-	  mode: 'flip',
-	  // flip || fade || zoomIn || zoomOut || slide || random
-	  initialFill: true
-	};
-	const obj = {
-	  divs: [],
-	  filenames: []
-	};
-	const stripExtension = filename => {
-	  const lastDotIndex = filename.lastIndexOf('.');
-	  return filename.slice(0, lastDotIndex);
-	};
-	const unspace = string => {
-	  return string.replace(/-/gm, ' ');
-	};
-	const loop = () => {
-	  if (C.resetting) {
-	    return;
-	  }
-	  const wCoverNumber = Math.floor(Math.random() * C.count);
-	  const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
-	  // console.log(`loop has picked cover number ${wCoverNumber}`);
-	  changeCover(wCover);
-	};
-	const end = () => {
-	  if (!C.resetting) {
-	    window.setTimeout(() => {
-	      loop();
-	    }, C.autoDelay);
-	  }
-	};
-	const showInFooter = wFile => {
-	  const strippedFile = stripExtension(wFile);
-	  // console.log(strippedFile);
-	  const parts = strippedFile.split('-----');
-	  const footerElement = document.querySelector('footer');
-	  footerElement.textContent = `${unspace(parts[0])} - ${unspace(parts[1])}`;
-	};
+
 	const flipCover = (element, wFile) => {
 	  const PERSPECTIVE = '300px';
 	  const divElement = element;
@@ -124,6 +44,7 @@
 	  };
 	  flipForward.play();
 	};
+
 	const fadeCover = (element, wFile) => {
 	  const divElement = element;
 	  const lPos = divElement.style.left;
@@ -158,6 +79,7 @@
 	  showInFooter(wFile);
 	  fadeIn.play();
 	};
+
 	const zoomInCover = (element, wFile) => {
 	  const divElement = element;
 	  divElement.classList.add('plughole');
@@ -190,6 +112,7 @@
 	  showInFooter(wFile);
 	  zoomIn.play();
 	};
+
 	const zoomOutCover = (element, wFile) => {
 	  const divElement = element;
 	  const currFile = divElement.dataset.filename;
@@ -224,6 +147,7 @@
 	  showInFooter(wFile);
 	  zoomOut.play();
 	};
+
 	const slideCover = (element, wFile) => {
 	  const divElement = element;
 	  const currFile = divElement.dataset.filename;
@@ -275,6 +199,7 @@
 	  showInFooter(wFile);
 	  slide.play();
 	};
+
 	const changeCover = element => {
 	  const divElement = element;
 	  const wCover = Math.floor(Math.random() * C.coverCount);
@@ -287,6 +212,9 @@
 	    return;
 	  }
 	  let whichMode = C.mode;
+	  if (whichMode === 'random') {
+	    whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
+	  }
 
 	  // console.log(`whichMode: ${whichMode}`);
 
@@ -308,31 +236,113 @@
 	      flipCover(divElement, wFile);
 	  }
 	};
+	const loop = () => {
+	  if (C.resetting) {
+	    return;
+	  }
+	  const wCoverNumber = Math.floor(Math.random() * C.count);
+	  const wCover = document.querySelector(`[data-count="${wCoverNumber}"]`);
+	  // console.log(`loop has picked cover number ${wCoverNumber}`);
+	  changeCover(wCover);
+	};
+	const end = () => {
+	  if (C.auto && !C.resetting) {
+	    window.setTimeout(() => {
+	      loop();
+	    }, C.autoDelay);
+	  }
+	};
+	const showInFooter = wFile => {
+	  const strippedFile = stripExtension(wFile);
+	  // console.log(strippedFile);
+	  const parts = strippedFile.split('-----');
+	  const footerElement = document.querySelector('footer');
+	  footerElement.textContent = `${unspace(parts[0])} - ${unspace(parts[1])}`;
+	};
+	const stripExtension = filename => {
+	  const lastDotIndex = filename.lastIndexOf('.');
+	  return filename.slice(0, lastDotIndex);
+	};
+	const unspace = string => {
+	  return string.replace(/-/gm, ' ');
+	};
+
+	/*
+	TODOs:
+	* add controls for
+		* switching modes
+		* transition duration
+		* delay time in auto mode
+		* size of tiles
+		* initial fill, or nah
+	* break transition functions into their own files
+	* some simple maths to make sure that there are at least 2 rows and 2 cols
+	* spin transition?
+	* some kind of design?
+	  * nicer background than grey box
+		* title
+		* page bg maybe
+	* favicon
+	* in auto mode, have a popup on click that shows album details
+	* in auto mode, add a pause button
+	* investigate lazy load or something? maybe load before flip?
+	* further crazy transitions, like blinds? checkerboard?
+	*/
+
+	/*
+	TO DONE:
+	* figure out why occasionally a flip doesn't happen
+	* have a tiny footer that shows the current flip details
+	* find a way of setting the time in JS or CSS, not both
+	* have two time values, one for transition duration and one for gap between transitions
+	* repaint on window resize
+	* investigate different methods of changing, other than flip? (fade, zoom etc)
+	* exclude the white image from covers
+	* make initial container fill optional
+	*/
+
+	const C$1 = {
+	  // constants
+	  size: 150,
+	  auto: true,
+	  autoDelay: 1000,
+	  transitionDuration: 800,
+	  coversPath: '/public/images/covers/',
+	  forceSmall: false,
+	  resetting: false,
+	  mode: 'flip',
+	  // flip || fade || zoomIn || zoomOut || slide || random
+	  initialFill: true
+	};
+	const obj = {
+	  divs: [],
+	  filenames: []
+	};
 	const fillContainer = () => {
 	  let count = 0;
-	  for (let c = 0; c < C.colCount; c++) {
-	    for (let r = 0; r < C.rowCount; r++) {
+	  for (let c = 0; c < C$1.colCount; c++) {
+	    for (let r = 0; r < C$1.rowCount; r++) {
 	      // console.log(`row ${r}, col ${c}`);
-	      const wCover = Math.floor(Math.random() * C.coverCount);
+	      const wCover = Math.floor(Math.random() * C$1.coverCount);
 	      const element = document.createElement('div');
 	      element.classList.add('c');
-	      element.style.width = `${C.size}px`;
-	      element.style.height = `${C.size}px`;
-	      element.style.left = `${C.size * r}px`;
-	      element.style.top = `${C.size * c}px`;
+	      element.style.width = `${C$1.size}px`;
+	      element.style.height = `${C$1.size}px`;
+	      element.style.left = `${C$1.size * r}px`;
+	      element.style.top = `${C$1.size * c}px`;
 	      element.dataset.row = `row${r}`;
 	      element.dataset.col = `col${c}`;
 	      element.dataset.count = count;
 	      {
-	        element.style.backgroundImage = `url(${C.coversPath}${C.files[wCover]})`;
-	        element.dataset.filename = C.files[wCover];
+	        element.style.backgroundImage = `url(${C$1.coversPath}${C$1.files[wCover]})`;
+	        element.dataset.filename = C$1.files[wCover];
 	      }
-	      C.container.append(element);
+	      C$1.container.append(element);
 	      obj.divs.push(element);
 	      count++;
 	    }
 	  }
-	  C.count = count;
+	  C$1.count = count;
 	  console.log(`count: ${count}`);
 	  {
 	    loop();
@@ -348,23 +358,23 @@
 	  return covers;
 	};
 	const setup = () => {
-	  C.files = getFilenames();
+	  C$1.files = getFilenames();
 	  // console.log(C.files);
-	  C.coverCount = C.files.length;
-	  C.container = document.querySelector('main');
-	  C.container.replaceChildren();
+	  C$1.coverCount = C$1.files.length;
+	  C$1.container = document.querySelector('main');
+	  C$1.container.replaceChildren();
 	  const vpw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 	  const vph = document.body.clientHeight;
-	  const availWidth = vpw - C.size;
-	  const availHeight = vph - C.size;
-	  let rowLength = Math.max(Math.floor(availWidth / C.size), 2);
-	  let colHeight = Math.floor(availHeight / C.size);
-	  C.contWidth = rowLength * C.size;
-	  C.contHeight = colHeight * C.size;
-	  C.container.style.width = `${C.contWidth}px`;
-	  C.container.style.height = `${C.contHeight}px`;
-	  C.rowCount = Math.floor(C.contWidth / C.size);
-	  C.colCount = Math.floor(C.contHeight / C.size);
+	  const availWidth = vpw - C$1.size;
+	  const availHeight = vph - C$1.size;
+	  let rowLength = Math.max(Math.floor(availWidth / C$1.size), 2);
+	  let colHeight = Math.floor(availHeight / C$1.size);
+	  C$1.contWidth = rowLength * C$1.size;
+	  C$1.contHeight = colHeight * C$1.size;
+	  C$1.container.style.width = `${C$1.contWidth}px`;
+	  C$1.container.style.height = `${C$1.contHeight}px`;
+	  C$1.rowCount = Math.floor(C$1.contWidth / C$1.size);
+	  C$1.colCount = Math.floor(C$1.contHeight / C$1.size);
 	  console.log(`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`);
 	  fillContainer();
 	};
@@ -373,15 +383,15 @@
 	  setup();
 	};
 	const reset = () => {
-	  if (!C.resetting) {
-	    C.resetting = true;
+	  if (!C$1.resetting) {
+	    C$1.resetting = true;
 	    for (const div of obj.divs) {
 	      div.classList.add('resetFadeOut');
 	    }
 	    window.setTimeout(() => {
-	      C.resetting = false;
+	      C$1.resetting = false;
 	      setup();
-	    }, (C.autoDelay + C.transitionDuration) * 2);
+	    }, (C$1.autoDelay + C$1.transitionDuration) * 2);
 	  }
 	};
 	window.addEventListener('load', init);
