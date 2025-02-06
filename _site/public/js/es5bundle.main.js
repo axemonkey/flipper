@@ -4,6 +4,7 @@
 	/*
 	TODOs:
 	* spin transition?
+	* some simple maths to make sure that there are at least 2 rows and 2 cols
 	* some kind of design?
 	  * nicer background than grey box
 		* title
