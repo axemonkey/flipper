@@ -12,7 +12,10 @@ module.exports = function (eleventyConfig) {
 
 		for (const cover of coversSrc) {
 			const coverBits = cover.split('/');
-			covers.push(coverBits[coverBits.length - 1]);
+			const coverName = coverBits[coverBits.length - 1];
+			if (coverName !== '_-----_.png') {
+				covers.push(coverName);
+			}
 		}
 		return covers;
 	});

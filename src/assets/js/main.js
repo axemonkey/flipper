@@ -1,16 +1,16 @@
 /*
 TODOs:
-* investigate lazy load or something? maybe load before flip?
 * make initial container fill optional
 * some kind of design?
 * favicon
-* investigate different methods of changing, other than flip? (fade, zoom etc)
 * add controls for
 	* switching modes
+	* transition duration
 	* delay time in auto mode
 	* size of tiles
 * in auto mode, have a popup on click that shows album details
 * in auto mode, add a pause button
+* investigate lazy load or something? maybe load before flip?
 */
 
 /*
@@ -20,6 +20,8 @@ TO DONE:
 * find a way of setting the time in JS or CSS, not both
 * have two time values, one for transition duration and one for gap between transitions
 * repaint on window resize
+* investigate different methods of changing, other than flip? (fade, zoom etc)
+* exclude the white image from covers
 */
 
 const MODES = [
