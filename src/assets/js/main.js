@@ -1,19 +1,19 @@
 /*
 TODOs:
-* spin transition?
-* some simple maths to make sure that there are at least 2 rows and 2 cols
-* some kind of design?
-  * nicer background than grey box
-	* title
-	* page bg maybe
-* break transition functions into their own files
-* favicon
 * add controls for
 	* switching modes
 	* transition duration
 	* delay time in auto mode
 	* size of tiles
 	* initial fill, or nah
+* break transition functions into their own files
+* some simple maths to make sure that there are at least 2 rows and 2 cols
+* spin transition?
+* some kind of design?
+  * nicer background than grey box
+	* title
+	* page bg maybe
+* favicon
 * in auto mode, have a popup on click that shows album details
 * in auto mode, add a pause button
 * investigate lazy load or something? maybe load before flip?
