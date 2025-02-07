@@ -8,8 +8,34 @@ button {
 	@include button;
 }
 
-#settings-button {
+.buttons {
 	position: absolute;
 	right: 5px;
 	top: 5px;
+}
+
+#pause-button {
+	.resume {
+		display: none;
+	}
+
+	.pause {
+		display: inline;
+	}
+}
+
+.paused {
+	#pause-button {
+		.resume {
+			display: inline;
+		}
+
+		.pause {
+			display: none;
+		}
+	}
+}
+
+.click #pause-button {
+	display: none;
 }

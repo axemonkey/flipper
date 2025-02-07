@@ -1,4 +1,7 @@
-import {reset} from '../main.js';
+import {
+	reset,
+	setBodyClass,
+} from '../main.js';
 import {
 	loop,
 } from './loop-functions.js';
@@ -10,6 +13,7 @@ const C = { // settings
 	size: 150,
 	auto: true,
 	autoDelay: 1000,
+	paused: false,
 	transitionDuration: 1000,
 	coversPath: '/public/images/covers/',
 	forceSmall: false,
@@ -29,6 +33,7 @@ const initModeDropdown = () => {
 			C.auto = false;
 			attachListeners();
 		}
+		setBodyClass();
 	});
 };
 

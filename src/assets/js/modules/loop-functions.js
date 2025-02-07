@@ -55,6 +55,15 @@ const changeCover = element => {
 	}
 };
 
+const pauseClicked = () => {
+	C.paused = !C.paused;
+	document.body.classList.toggle('paused');
+};
+
+const initPauseButton = () => {
+	document.querySelector('#pause-button').addEventListener('click', pauseClicked);
+};
+
 const loop = () => {
 	if (C.resetting) {
 		return;
@@ -67,9 +76,15 @@ const loop = () => {
 
 const end = () => {
 	if (C.auto && !C.resetting) {
-		window.setTimeout(() => {
-			loop();
-		}, C.autoDelay);
+		if (C.paused) {
+			window.setTimeout(() => {
+				end();
+			}, 500);
+		} else {
+			window.setTimeout(() => {
+				loop();
+			}, C.autoDelay);
+		}
 	}
 };
 
@@ -95,4 +110,5 @@ export {
 	loop,
 	end,
 	showInFooter,
+	initPauseButton,
 };

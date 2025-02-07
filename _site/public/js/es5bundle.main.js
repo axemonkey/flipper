@@ -324,6 +324,13 @@
 	      flipCover(divElement, wFile);
 	  }
 	};
+	const pauseClicked = () => {
+	  C.paused = !C.paused;
+	  document.body.classList.toggle('paused');
+	};
+	const initPauseButton = () => {
+	  document.querySelector('#pause-button').addEventListener('click', pauseClicked);
+	};
 	const loop = () => {
 	  if (C.resetting) {
 	    return;
@@ -335,9 +342,15 @@
 	};
 	const end = () => {
 	  if (C.auto && !C.resetting) {
-	    window.setTimeout(() => {
-	      loop();
-	    }, C.autoDelay);
+	    if (C.paused) {
+	      window.setTimeout(() => {
+	        end();
+	      }, 500);
+	    } else {
+	      window.setTimeout(() => {
+	        loop();
+	      }, C.autoDelay);
+	    }
 	  }
 	};
 	const showInFooter = wFile => {
@@ -369,6 +382,7 @@
 	  size: 150,
 	  auto: true,
 	  autoDelay: 1000,
+	  paused: false,
 	  transitionDuration: 1000,
 	  coversPath: '/public/images/covers/',
 	  forceSmall: false,
@@ -387,6 +401,7 @@
 	      C.auto = false;
 	      attachListeners();
 	    }
+	    setBodyClass();
 	  });
 	};
 	const initStartDropdown = () => {
@@ -463,15 +478,7 @@
 	TODOs:
 	* once controls exist, allow configuration in URL
 	* some simple maths to make sure that there are at least 2 rows and 2 cols
-	* spin transition
-	* reveal transition
-	* some kind of design?
-	  * nicer background than grey box
-		* title
-		* page bg maybe
-	* favicon
 	* in auto mode, have a popup on click that shows album details (and pauses)
-	* in auto mode, add a pause button
 	* investigate lazy load or something? maybe load before flip?
 	* further crazy transitions, like blinds? checkerboard?
 	* add a control to adjust size of tiles?
@@ -493,6 +500,14 @@
 		* transition duration
 		* delay time in auto mode
 		* initial fill, or nah
+	* spin transition
+	* reveal transition
+	* some kind of design?
+	  * nicer background than grey box
+		* title
+		* page bg maybe
+	* favicon
+	* in auto mode, add a pause button
 	*/
 
 	const obj = {
@@ -542,7 +557,12 @@
 	  obj.filenames = covers;
 	  return covers;
 	};
+	const setBodyClass = () => {
+	  document.body.classList.remove('auto', 'click');
+	  document.body.classList.add(C.auto ? 'auto' : 'click');
+	};
 	const setup = () => {
+	  setBodyClass();
 	  C.files = getFilenames();
 	  // console.log(C.files);
 	  C.coverCount = C.files.length;
@@ -570,6 +590,7 @@
 	};
 	const init = () => {
 	  console.log(`let's go`);
+	  initPauseButton();
 	  setup();
 	};
 	const reset = () => {
@@ -589,6 +610,7 @@
 
 	exports.obj = obj;
 	exports.reset = reset;
+	exports.setBodyClass = setBodyClass;
 
 	return exports;
 

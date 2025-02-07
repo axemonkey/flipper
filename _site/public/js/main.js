@@ -4,6 +4,7 @@ import {
 } from './modules/settings.js';
 import {
 	loop,
+	initPauseButton,
 } from './modules/loop-functions.js';
 import {
 	attachListeners,
@@ -13,15 +14,7 @@ import {
 TODOs:
 * once controls exist, allow configuration in URL
 * some simple maths to make sure that there are at least 2 rows and 2 cols
-* spin transition
-* reveal transition
-* some kind of design?
-  * nicer background than grey box
-	* title
-	* page bg maybe
-* favicon
 * in auto mode, have a popup on click that shows album details (and pauses)
-* in auto mode, add a pause button
 * investigate lazy load or something? maybe load before flip?
 * further crazy transitions, like blinds? checkerboard?
 * add a control to adjust size of tiles?
@@ -43,6 +36,14 @@ TO DONE:
 	* transition duration
 	* delay time in auto mode
 	* initial fill, or nah
+* spin transition
+* reveal transition
+* some kind of design?
+  * nicer background than grey box
+	* title
+	* page bg maybe
+* favicon
+* in auto mode, add a pause button
 */
 
 const obj = {
@@ -102,7 +103,13 @@ const getFilenames = () => {
 	return covers;
 };
 
+const setBodyClass = () => {
+	document.body.classList.remove('auto', 'click');
+	document.body.classList.add(C.auto ? 'auto' : 'click');
+};
+
 const setup = () => {
+	setBodyClass();
 	C.files = getFilenames();
 	// console.log(C.files);
 	C.coverCount = C.files.length;
@@ -140,6 +147,7 @@ const setup = () => {
 const init = () => {
 	console.log(`let's go`);
 
+	initPauseButton();
 	setup();
 };
 
@@ -164,4 +172,5 @@ window.addEventListener('resize', reset);
 export {
 	obj,
 	reset,
+	setBodyClass,
 };
