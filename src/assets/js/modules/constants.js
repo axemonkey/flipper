@@ -4,6 +4,7 @@ const MODES = [
 	'zoomIn',
 	'zoomOut',
 	'slide',
+	'reveal',
 	'random', // must be last
 ];
 
