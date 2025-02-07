@@ -12,6 +12,9 @@ button {
 	position: absolute;
 	right: 5px;
 	top: 5px;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
 }
 
 #pause-button {
