@@ -6,6 +6,7 @@ import {zoomInCover} from './transitions/zoom-in-cover.js';
 import {zoomOutCover} from './transitions/zoom-out-cover.js';
 import {slideCover} from './transitions/slide-cover.js';
 import {revealCover} from './transitions/reveal-cover.js';
+import {spinCover} from './transitions/spin-cover.js';
 
 const changeCover = element => {
 	const divElement = element;
@@ -45,6 +46,9 @@ const changeCover = element => {
 		break;
 	case 'reveal':
 		revealCover(divElement, wFile);
+		break;
+	case 'spin':
+		spinCover(divElement, wFile);
 		break;
 	default: // flip
 		flipCover(divElement, wFile);
