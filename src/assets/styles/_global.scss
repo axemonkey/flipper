@@ -11,6 +11,10 @@ html {
 }
 
 body {
+	background-image: radial-gradient(#ffcefc 2px, transparent 2px),
+		radial-gradient(#ffcefc 2px, transparent 2px);
+	background-size: 50px 50px;
+	background-position: 0 0, 25px 25px;
 	background-color: #fff;
 	color: #000;
 	font-family: Atkinson-Hyperlegible, Helvetica, sans-serif;
@@ -33,24 +37,30 @@ div {
 	background-repeat: no-repeat;
 }
 
-footer {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	text-align: center;
-	padding-bottom: 5px;
-	font-size: 0.75rem;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-}
-
 #list {
 	display: none;
 }
 
 main {
-	background: #999;
+	background: radial-gradient(
+				100% 100% at 100% 100%,
+				#0000 46%,
+				#fff 47% 53%,
+				#0000 54%
+			)
+			25px 25px,
+		radial-gradient(100% 100% at 0 0, #0000 46%, #fff 47% 53%, #0000 54%) 25px
+			25px,
+		radial-gradient(
+				100% 100%,
+				#0000 22%,
+				#fff 23% 29%,
+				#0000 30% 34%,
+				#fff 35% 41%,
+				#0000 42%
+			)
+			#e4e4ed;
+	background-size: 50px 50px;
 	position: relative;
 	transform: translateZ(0);
 	z-index: 10;

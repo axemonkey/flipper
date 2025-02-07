@@ -70,7 +70,7 @@ const showInFooter = wFile => {
 	// console.log(strippedFile);
 	const parts = strippedFile.split('-----');
 	const footerElement = document.querySelector('footer');
-	footerElement.textContent = `${unspace(parts[0])} - ${unspace(parts[1])}`;
+	footerElement.innerHTML = `<p>${unspace(parts[0])} - ${unspace(parts[1])}</p>`;
 };
 
 const stripExtension = filename => {

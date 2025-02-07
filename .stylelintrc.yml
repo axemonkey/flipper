@@ -26,3 +26,5 @@ rules:
     scss/at-mixin-pattern: null
     font-family-name-quotes: "always-where-recommended"
     no-descending-specificity: null
+    scss/operator-no-newline-after: null
+    color-hex-length: null
