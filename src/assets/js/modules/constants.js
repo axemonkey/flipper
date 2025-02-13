@@ -6,6 +6,7 @@ const MODES = [
 	'slide',
 	'reveal',
 	'spin',
+	'blinds',
 	'random', // must be last
 ];
 

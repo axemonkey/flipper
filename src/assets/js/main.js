@@ -16,7 +16,7 @@ TODOs:
 * some simple maths to make sure that there are at least 2 rows and 2 cols
 * in auto mode, have a popup on click that shows album details (and pauses)
 * investigate lazy load or something? maybe load before flip?
-* further crazy transitions, like blinds? checkerboard?
+* further crazy transitions, like checkerboard?
 * add a control to adjust size of tiles?
 */
 
@@ -38,6 +38,7 @@ TO DONE:
 	* initial fill, or nah
 * spin transition
 * reveal transition
+* blinds transition
 * some kind of design?
   * nicer background than grey box
 	* title

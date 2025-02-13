@@ -18,7 +18,7 @@ const C = { // settings
 	coversPath: '/public/images/covers/',
 	forceSmall: false,
 	resetting: false,
-	initialMode: 'flip',
+	initialMode: 'blinds',
 	initialFill: true,
 };
 const initialSettings = window.structuredClone(C);

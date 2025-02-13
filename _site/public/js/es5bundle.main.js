@@ -1,7 +1,7 @@
 (function (exports) {
 	'use strict';
 
-	const MODES = ['flip', 'fade', 'zoomIn', 'zoomOut', 'slide', 'reveal', 'spin', 'random' // must be last
+	const MODES = ['flip', 'fade', 'zoomIn', 'zoomOut', 'slide', 'reveal', 'spin', 'blinds', 'random' // must be last
 	];
 
 	const flipCover = (element, wFile) => {
@@ -279,6 +279,53 @@
 	  spinOut.play();
 	};
 
+	const blindsCover = (element, wFile) => {
+	  const divElement = element;
+	  const currFile = divElement.dataset.filename;
+	  const slats = 10;
+	  const slatWidth = C.size / slats;
+	  const slatsArray = [];
+	  const slatsAnim = [];
+	  for (let index = 0; index < slats; index++) {
+	    const newDiv = document.createElement('div');
+	    newDiv.classList.add('c', 'moving', `blinds-slat`);
+	    newDiv.id = `blinds-slat${index}`;
+	    newDiv.style.width = `${slatWidth}px`;
+	    newDiv.style.height = `${C.size}px`;
+	    newDiv.style.left = `${index * slatWidth}px`;
+	    newDiv.style.top = 0;
+	    newDiv.style.backgroundImage = `url(${C.coversPath}${currFile})`;
+	    newDiv.style.backgroundPosition = `${-index * slatWidth}px 0`;
+	    divElement.append(newDiv);
+	    slatsArray.push(newDiv);
+	  }
+	  divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
+	  for (let index = 0; index < slats; index++) {
+	    slatsAnim[index] = slatsArray[index].animate([{
+	      width: `${slatWidth}px`
+	    }, {
+	      width: 0
+	    }], {
+	      duration: Number(C.transitionDuration),
+	      iterations: 1,
+	      fill: 'forwards',
+	      easing: 'ease-in'
+	    });
+	    slatsAnim[index].cancel();
+	    slatsAnim[index].onfinish = () => {
+	      slatsArray[index].remove();
+	      if (index === 0) {
+	        divElement.dataset.filename = wFile;
+	        end();
+	      }
+	    };
+	  }
+	  showInFooter(wFile);
+	  for (let index = 0; index < slats; index++) {
+	    slatsAnim[index].play();
+	  }
+	};
+
 	const changeCover = element => {
 	  const divElement = element;
 	  const wCover = Math.floor(Math.random() * C.coverCount);
@@ -318,6 +365,9 @@
 	      break;
 	    case 'spin':
 	      spinCover(divElement, wFile);
+	      break;
+	    case 'blinds':
+	      blindsCover(divElement, wFile);
 	      break;
 	    default:
 	      // flip
@@ -387,7 +437,7 @@
 	  coversPath: '/public/images/covers/',
 	  forceSmall: false,
 	  resetting: false,
-	  initialMode: 'flip',
+	  initialMode: 'blinds',
 	  initialFill: true
 	};
 	const initialSettings = window.structuredClone(C);
@@ -480,7 +530,7 @@
 	* some simple maths to make sure that there are at least 2 rows and 2 cols
 	* in auto mode, have a popup on click that shows album details (and pauses)
 	* investigate lazy load or something? maybe load before flip?
-	* further crazy transitions, like blinds? checkerboard?
+	* further crazy transitions, like checkerboard?
 	* add a control to adjust size of tiles?
 	*/
 
@@ -502,6 +552,7 @@
 		* initial fill, or nah
 	* spin transition
 	* reveal transition
+	* blinds transition
 	* some kind of design?
 	  * nicer background than grey box
 		* title
