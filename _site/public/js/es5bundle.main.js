@@ -437,7 +437,7 @@
 	  coversPath: '/public/images/covers/',
 	  forceSmall: false,
 	  resetting: false,
-	  initialMode: 'blinds',
+	  initialMode: 'flip',
 	  initialFill: true
 	};
 	const initialSettings = window.structuredClone(C);
