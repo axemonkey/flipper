@@ -530,7 +530,7 @@
 	* some simple maths to make sure that there are at least 2 rows and 2 cols
 	* in auto mode, have a popup on click that shows album details (and pauses)
 	* investigate lazy load or something? maybe load before flip?
-	* further crazy transitions, like checkerboard?
+	* further crazy transitions, like checkerboard? explode?
 	* add a control to adjust size of tiles?
 	*/
 
