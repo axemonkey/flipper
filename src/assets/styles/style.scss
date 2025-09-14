@@ -1,11 +1,11 @@
-@use "fonts";
-@use "global";
-@use "buttons";
-@use "header";
-@use "footer";
-@use "forms";
-@use "settings";
+@use "partials/fonts";
+@use "partials/global";
+@use "partials/buttons";
+@use "partials/header";
+@use "partials/footer";
+@use "partials/forms";
+@use "partials/settings";
 
-@use "covers";
+@use "partials/covers";
 
-@use "util";
+@use "partials/util";
