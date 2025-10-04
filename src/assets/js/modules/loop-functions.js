@@ -1,15 +1,15 @@
-import {C} from './settings.js';
-import {MODES} from './constants.js';
-import {flipCover} from './transitions/flip-cover.js';
-import {fadeCover} from './transitions/fade-cover.js';
-import {zoomInCover} from './transitions/zoom-in-cover.js';
-import {zoomOutCover} from './transitions/zoom-out-cover.js';
-import {slideCover} from './transitions/slide-cover.js';
-import {revealCover} from './transitions/reveal-cover.js';
-import {spinCover} from './transitions/spin-cover.js';
-import {blindsCover} from './transitions/blinds-cover.js';
+import { C } from "./settings.js";
+import { MODES } from "./constants.js";
+import { flipCover } from "./transitions/flip-cover.js";
+import { fadeCover } from "./transitions/fade-cover.js";
+import { zoomInCover } from "./transitions/zoom-in-cover.js";
+import { zoomOutCover } from "./transitions/zoom-out-cover.js";
+import { slideCover } from "./transitions/slide-cover.js";
+import { revealCover } from "./transitions/reveal-cover.js";
+import { spinCover } from "./transitions/spin-cover.js";
+import { blindsCover } from "./transitions/blinds-cover.js";
 
-const changeCover = element => {
+const changeCover = (element) => {
 	const divElement = element;
 	const wCover = Math.floor(Math.random() * C.coverCount);
 	const wFile = C.files[wCover];
@@ -21,51 +21,55 @@ const changeCover = element => {
 	// console.log(`changeCover has picked ${wFile}`);
 
 	if (!MODES.includes(C.mode)) {
-		console.error(`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`);
+		console.error(
+			`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`
+		);
 		return;
 	}
 
 	let whichMode = C.mode;
-	if (whichMode === 'random') {
+	if (whichMode === "random") {
 		whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
 	}
 
 	// console.log(`whichMode: ${whichMode}`);
 
 	switch (whichMode) {
-	case 'fade':
-		fadeCover(divElement, wFile);
-		break;
-	case 'zoomIn':
-		zoomInCover(divElement, wFile);
-		break;
-	case 'zoomOut':
-		zoomOutCover(divElement, wFile);
-		break;
-	case 'slide':
-		slideCover(divElement, wFile);
-		break;
-	case 'reveal':
-		revealCover(divElement, wFile);
-		break;
-	case 'spin':
-		spinCover(divElement, wFile);
-		break;
-	case 'blinds':
-		blindsCover(divElement, wFile);
-		break;
-	default: // flip
-		flipCover(divElement, wFile);
+		case "fade":
+			fadeCover(divElement, wFile);
+			break;
+		case "zoomIn":
+			zoomInCover(divElement, wFile);
+			break;
+		case "zoomOut":
+			zoomOutCover(divElement, wFile);
+			break;
+		case "slide":
+			slideCover(divElement, wFile);
+			break;
+		case "reveal":
+			revealCover(divElement, wFile);
+			break;
+		case "spin":
+			spinCover(divElement, wFile);
+			break;
+		case "blinds":
+			blindsCover(divElement, wFile);
+			break;
+		default: // flip
+			flipCover(divElement, wFile);
 	}
 };
 
 const pauseClicked = () => {
 	C.paused = !C.paused;
-	document.body.classList.toggle('paused');
+	document.body.classList.toggle("paused");
 };
 
 const initPauseButton = () => {
-	document.querySelector('#pause-button').addEventListener('click', pauseClicked);
+	document
+		.querySelector("#pause-button")
+		.addEventListener("click", pauseClicked);
 };
 
 const loop = () => {
@@ -92,27 +96,23 @@ const end = () => {
 	}
 };
 
-const showInFooter = wFile => {
+const showInFooter = (wFile) => {
 	const strippedFile = stripExtension(wFile);
 	// console.log(strippedFile);
-	const parts = strippedFile.split('-----');
-	const footerElement = document.querySelector('footer');
-	footerElement.innerHTML = `<p>${unspace(parts[0])} - ${unspace(parts[1])}</p>`;
+	const parts = strippedFile.split("-----");
+	const footerElement = document.querySelector("footer");
+	footerElement.innerHTML = `<p>${unspace(parts[0])} - ${unspace(
+		parts[1]
+	)}</p>`;
 };
 
-const stripExtension = filename => {
-	const lastDotIndex = filename.lastIndexOf('.');
+const stripExtension = (filename) => {
+	const lastDotIndex = filename.lastIndexOf(".");
 	return filename.slice(0, lastDotIndex);
 };
 
-const unspace = string => {
-	return string.replace(/-/gm, ' ');
+const unspace = (string) => {
+	return string.replace(/-/gm, " ");
 };
 
-export {
-	changeCover,
-	loop,
-	end,
-	showInFooter,
-	initPauseButton,
-};
+export { changeCover, loop, end, showInFooter, initPauseButton };

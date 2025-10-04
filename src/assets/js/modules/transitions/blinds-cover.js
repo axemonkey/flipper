@@ -1,8 +1,5 @@
-import {C} from '../settings.js';
-import {
-	end,
-	showInFooter,
-} from '../loop-functions.js';
+import { C } from "../settings.js";
+import { end, showInFooter } from "../loop-functions.js";
 
 const blindsCover = (element, wFile) => {
 	const divElement = element;
@@ -13,12 +10,12 @@ const blindsCover = (element, wFile) => {
 	const slatsAnim = [];
 
 	for (let index = 0; index < slats; index++) {
-		const newDiv = document.createElement('div');
-		newDiv.classList.add('c', 'moving', `blinds-slat`);
+		const newDiv = document.createElement("div");
+		newDiv.classList.add("c", "moving", `blinds-slat`);
 		newDiv.id = `blinds-slat${index}`;
 		newDiv.style.width = `${slatWidth}px`;
 		newDiv.style.height = `${C.size}px`;
-		newDiv.style.left = `${index * (slatWidth)}px`;
+		newDiv.style.left = `${index * slatWidth}px`;
 		newDiv.style.top = 0;
 		newDiv.style.backgroundImage = `url(${C.coversPath}${currFile})`;
 		newDiv.style.backgroundPosition = `${-index * slatWidth}px 0`;
@@ -29,19 +26,22 @@ const blindsCover = (element, wFile) => {
 	divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
 
 	for (let index = 0; index < slats; index++) {
-		slatsAnim[index] = slatsArray[index].animate([
+		slatsAnim[index] = slatsArray[index].animate(
+			[
+				{
+					width: `${slatWidth}px`,
+				},
+				{
+					width: 0,
+				},
+			],
 			{
-				width: `${slatWidth}px`,
-			},
-			{
-				width: 0,
-			},
-		], {
-			duration: Number(C.transitionDuration),
-			iterations: 1,
-			fill: 'forwards',
-			easing: 'ease-in',
-		});
+				duration: Number(C.transitionDuration),
+				iterations: 1,
+				fill: "forwards",
+				easing: "ease-in",
+			}
+		);
 		slatsAnim[index].cancel();
 
 		slatsAnim[index].onfinish = () => {
@@ -60,6 +60,4 @@ const blindsCover = (element, wFile) => {
 	}
 };
 
-export {
-	blindsCover,
-};
+export { blindsCover };

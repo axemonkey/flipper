@@ -1,32 +1,26 @@
-import {
-	reset,
-	setBodyClass,
-} from '../main.js';
-import {
-	loop,
-} from './loop-functions.js';
-import {
-	attachListeners,
-} from './click-functions.js';
+import { reset, setBodyClass } from "../main.js";
+import { loop } from "./loop-functions.js";
+import { attachListeners } from "./click-functions.js";
 
-const C = { // settings
+const C = {
+	// settings
 	size: 150,
 	auto: true,
 	autoDelay: 1000,
 	paused: false,
 	transitionDuration: 1000,
-	coversPath: '/public/images/covers/',
+	coversPath: "/public/images/covers/",
 	forceSmall: false,
 	resetting: false,
-	initialMode: 'flip',
+	initialMode: "flip",
 	initialFill: true,
 };
 const initialSettings = window.structuredClone(C);
 
 const initModeDropdown = () => {
-	const element = document.querySelector('#settings-mode');
-	element.addEventListener('change', () => {
-		if (element.value === 'auto') {
+	const element = document.querySelector("#settings-mode");
+	element.addEventListener("change", () => {
+		if (element.value === "auto") {
 			C.auto = true;
 			loop();
 		} else {
@@ -38,40 +32,40 @@ const initModeDropdown = () => {
 };
 
 const initStartDropdown = () => {
-	const element = document.querySelector('#settings-start');
-	element.addEventListener('change', () => {
-		C.initialFill = (element.value === 'filled');
+	const element = document.querySelector("#settings-start");
+	element.addEventListener("change", () => {
+		C.initialFill = element.value === "filled";
 		reset();
 	});
 };
 
 const initTransitionDropdown = () => {
-	const element = document.querySelector('#settings-transition');
-	element.addEventListener('change', () => {
+	const element = document.querySelector("#settings-transition");
+	element.addEventListener("change", () => {
 		C.mode = element.value;
 	});
 };
 
 const initDurationSlider = () => {
-	const element = document.querySelector('#settings-duration');
-	element.addEventListener('change', () => {
+	const element = document.querySelector("#settings-duration");
+	element.addEventListener("change", () => {
 		C.transitionDuration = element.value;
 	});
 };
 
 const initDelaySlider = () => {
-	const element = document.querySelector('#settings-delay');
-	element.addEventListener('change', () => {
+	const element = document.querySelector("#settings-delay");
+	element.addEventListener("change", () => {
 		C.autoDelay = element.value;
 	});
 };
 
 const showSettings = () => {
-	document.querySelector('#settings').classList.remove('u-hide');
+	document.querySelector("#settings").classList.remove("u-hide");
 };
 
 const hideSettings = () => {
-	document.querySelector('#settings').classList.add('u-hide');
+	document.querySelector("#settings").classList.add("u-hide");
 };
 
 const resetSettings = () => {
@@ -83,11 +77,20 @@ const resetSettings = () => {
 	C.initialFill = initialSettings.initialFill;
 	C.mode = initialSettings.initialMode;
 
-	document.querySelector('#settings-mode').value = (initialSettings.auto ? 'auto' : 'click');
-	document.querySelector('#settings-start').value = (initialSettings.initialFill ? 'filled' : 'empty');
-	document.querySelector('#settings-transition').value = initialSettings.initialMode;
-	document.querySelector('#settings-duration').value = Number(initialSettings.transitionDuration);
-	document.querySelector('#settings-delay').value = Number(initialSettings.autoDelay);
+	document.querySelector("#settings-mode").value = initialSettings.auto
+		? "auto"
+		: "click";
+	document.querySelector("#settings-start").value = initialSettings.initialFill
+		? "filled"
+		: "empty";
+	document.querySelector("#settings-transition").value =
+		initialSettings.initialMode;
+	document.querySelector("#settings-duration").value = Number(
+		initialSettings.transitionDuration
+	);
+	document.querySelector("#settings-delay").value = Number(
+		initialSettings.autoDelay
+	);
 
 	if (loopRestart) {
 		loop();
@@ -95,15 +98,17 @@ const resetSettings = () => {
 };
 
 const initButtons = () => {
-	document.querySelector('#settings-button').addEventListener('click', event => {
-		showSettings();
-		event.target.classList.add('u-hide');
-	});
-	document.querySelector('#settings-close').addEventListener('click', () => {
+	document
+		.querySelector("#settings-button")
+		.addEventListener("click", (event) => {
+			showSettings();
+			event.target.classList.add("u-hide");
+		});
+	document.querySelector("#settings-close").addEventListener("click", () => {
 		hideSettings();
-		document.querySelector('#settings-button').classList.remove('u-hide');
+		document.querySelector("#settings-button").classList.remove("u-hide");
 	});
-	document.querySelector('#settings-reset').addEventListener('click', () => {
+	document.querySelector("#settings-reset").addEventListener("click", () => {
 		resetSettings();
 	});
 };
@@ -117,7 +122,4 @@ const initSettings = () => {
 	initButtons();
 };
 
-export {
-	C,
-	initSettings,
-};
+export { C, initSettings };

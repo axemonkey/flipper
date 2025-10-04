@@ -1,8 +1,5 @@
-import {C} from '../settings.js';
-import {
-	end,
-	showInFooter,
-} from '../loop-functions.js';
+import { C } from "../settings.js";
+import { end, showInFooter } from "../loop-functions.js";
 
 const revealCover = (element, wFile) => {
 	const divElement = element;
@@ -10,36 +7,39 @@ const revealCover = (element, wFile) => {
 
 	// divElement.classList.add('plughole');
 
-	const newDiv = document.createElement('div');
-	newDiv.classList.add('moving');
+	const newDiv = document.createElement("div");
+	newDiv.classList.add("moving");
 	newDiv.style.width = `${C.size}px`;
 	newDiv.style.height = `${C.size}px`;
 	newDiv.style.left = 0;
 	newDiv.style.top = 0;
 	newDiv.style.backgroundImage = `url(${C.coversPath}${currFile})`;
-	newDiv.style.backgroundPosition = 'left center';
+	newDiv.style.backgroundPosition = "left center";
 
 	divElement.append(newDiv);
 
 	divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
 
-	const reveal = newDiv.animate([
+	const reveal = newDiv.animate(
+		[
+			{
+				width: `${C.size}px`,
+			},
+			{
+				width: 0,
+			},
+		],
 		{
-			width: `${C.size}px`,
-		},
-		{
-			width: 0,
-		},
-	], {
-		duration: Number(C.transitionDuration),
-		iterations: 1,
-		fill: 'forwards',
-		easing: 'ease-in',
-	});
+			duration: Number(C.transitionDuration),
+			iterations: 1,
+			fill: "forwards",
+			easing: "ease-in",
+		}
+	);
 	reveal.cancel();
 
 	reveal.onfinish = () => {
-		divElement.classList.remove('plughole');
+		divElement.classList.remove("plughole");
 		// divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
 		divElement.dataset.filename = wFile;
 		newDiv.remove();
@@ -51,6 +51,4 @@ const revealCover = (element, wFile) => {
 	reveal.play();
 };
 
-export {
-	revealCover,
-};
+export { revealCover };
