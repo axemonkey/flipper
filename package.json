@@ -8,6 +8,7 @@
     "build:assets": "npx sn-assets-pipeline build",
     "build:images": "node tooling/process-images.js",
     "dev": "npm run build && npm-run-all --parallel start watch",
+    "prettier": "npx prettier . -w",
     "watch": "npm-run-all --parallel watch:assets watch:images",
     "watch:assets": "npx sn-assets-pipeline watch",
     "watch:images": "onchange './src/assets/images/**/*' -- npm run build:images"
