@@ -1,13 +1,13 @@
-import { C } from "./settings.js";
-import { MODES } from "./constants.js";
-import { flipCover } from "./transitions/flip-cover.js";
-import { fadeCover } from "./transitions/fade-cover.js";
-import { zoomInCover } from "./transitions/zoom-in-cover.js";
-import { zoomOutCover } from "./transitions/zoom-out-cover.js";
-import { slideCover } from "./transitions/slide-cover.js";
-import { revealCover } from "./transitions/reveal-cover.js";
-import { spinCover } from "./transitions/spin-cover.js";
-import { blindsCover } from "./transitions/blinds-cover.js";
+import { C } from './settings.js';
+import { MODES } from './constants.js';
+import { flipCover } from './transitions/flip-cover.js';
+import { fadeCover } from './transitions/fade-cover.js';
+import { zoomInCover } from './transitions/zoom-in-cover.js';
+import { zoomOutCover } from './transitions/zoom-out-cover.js';
+import { slideCover } from './transitions/slide-cover.js';
+import { revealCover } from './transitions/reveal-cover.js';
+import { spinCover } from './transitions/spin-cover.js';
+import { blindsCover } from './transitions/blinds-cover.js';
 
 const changeCover = (element) => {
 	const divElement = element;
@@ -28,32 +28,32 @@ const changeCover = (element) => {
 	}
 
 	let whichMode = C.mode;
-	if (whichMode === "random") {
+	if (whichMode === 'random') {
 		whichMode = MODES[Math.floor(Math.random() * (MODES.length - 1))];
 	}
 
 	// console.log(`whichMode: ${whichMode}`);
 
 	switch (whichMode) {
-		case "fade":
+		case 'fade':
 			fadeCover(divElement, wFile);
 			break;
-		case "zoomIn":
+		case 'zoomIn':
 			zoomInCover(divElement, wFile);
 			break;
-		case "zoomOut":
+		case 'zoomOut':
 			zoomOutCover(divElement, wFile);
 			break;
-		case "slide":
+		case 'slide':
 			slideCover(divElement, wFile);
 			break;
-		case "reveal":
+		case 'reveal':
 			revealCover(divElement, wFile);
 			break;
-		case "spin":
+		case 'spin':
 			spinCover(divElement, wFile);
 			break;
-		case "blinds":
+		case 'blinds':
 			blindsCover(divElement, wFile);
 			break;
 		default: // flip
@@ -63,13 +63,13 @@ const changeCover = (element) => {
 
 const pauseClicked = () => {
 	C.paused = !C.paused;
-	document.body.classList.toggle("paused");
+	document.body.classList.toggle('paused');
 };
 
 const initPauseButton = () => {
 	document
-		.querySelector("#pause-button")
-		.addEventListener("click", pauseClicked);
+		.querySelector('#pause-button')
+		.addEventListener('click', pauseClicked);
 };
 
 const loop = () => {
@@ -99,20 +99,20 @@ const end = () => {
 const showInFooter = (wFile) => {
 	const strippedFile = stripExtension(wFile);
 	// console.log(strippedFile);
-	const parts = strippedFile.split("-----");
-	const footerElement = document.querySelector("footer");
+	const parts = strippedFile.split('-----');
+	const footerElement = document.querySelector('footer');
 	footerElement.innerHTML = `<p>${unspace(parts[0])} - ${unspace(
 		parts[1]
 	)}</p>`;
 };
 
 const stripExtension = (filename) => {
-	const lastDotIndex = filename.lastIndexOf(".");
+	const lastDotIndex = filename.lastIndexOf('.');
 	return filename.slice(0, lastDotIndex);
 };
 
 const unspace = (string) => {
-	return string.replace(/-/gm, " ");
+	return string.replace(/-/gm, ' ');
 };
 
 export { changeCover, loop, end, showInFooter, initPauseButton };

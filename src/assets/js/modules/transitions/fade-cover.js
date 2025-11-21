@@ -1,14 +1,14 @@
-import { C } from "../settings.js";
-import { end, showInFooter } from "../loop-functions.js";
+import { C } from '../settings.js';
+import { end, showInFooter } from '../loop-functions.js';
 
 const fadeCover = (element, wFile) => {
 	const divElement = element;
 	const lPos = divElement.style.left;
 	const tPos = divElement.style.top;
 
-	const newDiv = document.createElement("div");
-	newDiv.classList.add("c");
-	newDiv.classList.add("moving");
+	const newDiv = document.createElement('div');
+	newDiv.classList.add('c');
+	newDiv.classList.add('moving');
 	newDiv.style.width = `${C.size}px`;
 	newDiv.style.height = `${C.size}px`;
 	newDiv.style.left = lPos;
@@ -21,8 +21,8 @@ const fadeCover = (element, wFile) => {
 	const fadeIn = newDiv.animate([{ opacity: 0 }, { opacity: 1 }], {
 		duration: Number(C.transitionDuration),
 		iterations: 1,
-		fill: "forwards",
-		easing: "ease-in",
+		fill: 'forwards',
+		easing: 'ease-in',
 	});
 	fadeIn.cancel();
 

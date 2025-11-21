@@ -1,5 +1,5 @@
-import { C } from "../settings.js";
-import { end, showInFooter } from "../loop-functions.js";
+import { C } from '../settings.js';
+import { end, showInFooter } from '../loop-functions.js';
 
 const blindsCover = (element, wFile) => {
 	const divElement = element;
@@ -10,8 +10,8 @@ const blindsCover = (element, wFile) => {
 	const slatsAnim = [];
 
 	for (let index = 0; index < slats; index++) {
-		const newDiv = document.createElement("div");
-		newDiv.classList.add("c", "moving", `blinds-slat`);
+		const newDiv = document.createElement('div');
+		newDiv.classList.add('c', 'moving', `blinds-slat`);
 		newDiv.id = `blinds-slat${index}`;
 		newDiv.style.width = `${slatWidth}px`;
 		newDiv.style.height = `${C.size}px`;
@@ -38,8 +38,8 @@ const blindsCover = (element, wFile) => {
 			{
 				duration: Number(C.transitionDuration),
 				iterations: 1,
-				fill: "forwards",
-				easing: "ease-in",
+				fill: 'forwards',
+				easing: 'ease-in',
 			}
 		);
 		slatsAnim[index].cancel();

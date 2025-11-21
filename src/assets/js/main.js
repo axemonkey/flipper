@@ -1,6 +1,6 @@
-import { C, initSettings } from "./modules/settings.js";
-import { loop, initPauseButton } from "./modules/loop-functions.js";
-import { attachListeners } from "./modules/click-functions.js";
+import { C, initSettings } from './modules/settings.js';
+import { loop, initPauseButton } from './modules/loop-functions.js';
+import { attachListeners } from './modules/click-functions.js';
 
 /*
 TODOs:
@@ -51,9 +51,9 @@ const fillContainer = () => {
 		for (let r = 0; r < C.rowCount; r++) {
 			// console.log(`row ${r}, col ${c}`);
 			const wCover = Math.floor(Math.random() * C.coverCount);
-			const element = document.createElement("div");
+			const element = document.createElement('div');
 
-			element.classList.add("c");
+			element.classList.add('c');
 			element.style.width = `${C.size}px`;
 			element.style.height = `${C.size}px`;
 			element.style.left = `${C.size * r}px`;
@@ -62,7 +62,7 @@ const fillContainer = () => {
 			element.dataset.col = `col${c}`;
 			element.dataset.count = count;
 
-			let imageFile = "_-----_.png"; // blank white
+			let imageFile = '_-----_.png'; // blank white
 			if (C.initialFill) {
 				imageFile = `${C.files[wCover]}`;
 			}
@@ -87,7 +87,7 @@ const fillContainer = () => {
 };
 
 const getFilenames = () => {
-	const els = document.querySelectorAll("#list li");
+	const els = document.querySelectorAll('#list li');
 	const covers = [];
 	for (const el of els) {
 		covers.push(el.textContent);
@@ -97,8 +97,8 @@ const getFilenames = () => {
 };
 
 const setBodyClass = () => {
-	document.body.classList.remove("auto", "click");
-	document.body.classList.add(C.auto ? "auto" : "click");
+	document.body.classList.remove('auto', 'click');
+	document.body.classList.add(C.auto ? 'auto' : 'click');
 };
 
 const setup = () => {
@@ -106,7 +106,7 @@ const setup = () => {
 	C.files = getFilenames();
 	// console.log(C.files);
 	C.coverCount = C.files.length;
-	C.container = document.querySelector("main");
+	C.container = document.querySelector('main');
 	C.container.replaceChildren();
 
 	const vpw = Math.max(
@@ -154,7 +154,7 @@ const reset = () => {
 		C.resetting = true;
 
 		for (const div of obj.divs) {
-			div.classList.add("resetFadeOut");
+			div.classList.add('resetFadeOut');
 		}
 
 		window.setTimeout(() => {
@@ -164,7 +164,7 @@ const reset = () => {
 	}
 };
 
-window.addEventListener("load", init);
-window.addEventListener("resize", reset);
+window.addEventListener('load', init);
+window.addEventListener('resize', reset);
 
 export { obj, reset, setBodyClass };

@@ -1,11 +1,11 @@
-import { C } from "../settings.js";
-import { end, showInFooter } from "../loop-functions.js";
+import { C } from '../settings.js';
+import { end, showInFooter } from '../loop-functions.js';
 
 const spinCover = (element, wFile) => {
 	const scaleTo = 0.4;
 	const divElement = element;
 	const currentBg = divElement.dataset.filename;
-	divElement.classList.add("moving");
+	divElement.classList.add('moving');
 	divElement.style.backgroundImage = `url(${C.coversPath}${currentBg}), url(${C.coversPath}${wFile})`;
 
 	const spinOut = divElement.animate(
@@ -20,8 +20,8 @@ const spinCover = (element, wFile) => {
 		{
 			duration: Number(C.transitionDuration) / 2,
 			iterations: 1,
-			fill: "forwards",
-			easing: "ease-in",
+			fill: 'forwards',
+			easing: 'ease-in',
 		}
 	);
 	spinOut.cancel();
@@ -38,8 +38,8 @@ const spinCover = (element, wFile) => {
 		{
 			duration: Number(C.transitionDuration) / 2,
 			iterations: 1,
-			fill: "forwards",
-			easing: "ease-out",
+			fill: 'forwards',
+			easing: 'ease-out',
 		}
 	);
 	spinBack.cancel();
@@ -52,7 +52,7 @@ const spinCover = (element, wFile) => {
 	};
 
 	spinBack.onfinish = () => {
-		divElement.classList.remove("moving");
+		divElement.classList.remove('moving');
 		end();
 	};
 

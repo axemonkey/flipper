@@ -1,13 +1,13 @@
-import { C } from "../settings.js";
-import { end, showInFooter } from "../loop-functions.js";
+import { C } from '../settings.js';
+import { end, showInFooter } from '../loop-functions.js';
 
 const zoomInCover = (element, wFile) => {
 	const divElement = element;
 
-	divElement.classList.add("plughole");
+	divElement.classList.add('plughole');
 
-	const newDiv = document.createElement("div");
-	newDiv.classList.add("moving");
+	const newDiv = document.createElement('div');
+	newDiv.classList.add('moving');
 	newDiv.style.width = `0`;
 	newDiv.style.height = `0`;
 	newDiv.style.backgroundImage = `url(${C.coversPath}${wFile})`;
@@ -28,14 +28,14 @@ const zoomInCover = (element, wFile) => {
 		{
 			duration: Number(C.transitionDuration),
 			iterations: 1,
-			fill: "forwards",
-			easing: "ease-in",
+			fill: 'forwards',
+			easing: 'ease-in',
 		}
 	);
 	zoomIn.cancel();
 
 	zoomIn.onfinish = () => {
-		divElement.classList.remove("plughole");
+		divElement.classList.remove('plughole');
 		divElement.style.backgroundImage = `url(${C.coversPath}${wFile})`;
 		divElement.dataset.filename = wFile;
 		newDiv.remove();
