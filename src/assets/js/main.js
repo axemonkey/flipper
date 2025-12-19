@@ -10,6 +10,7 @@ TODOs:
 * investigate lazy load or something? maybe load before flip?
 * further crazy transitions, like checkerboard? explode?
 * add a control to adjust size of tiles?
+* add a control so you can turn off repaint on resize
 */
 
 /*
