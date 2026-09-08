@@ -22,7 +22,7 @@ const spinCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-in',
-		}
+		},
 	);
 	spinOut.cancel();
 
@@ -40,7 +40,7 @@ const spinCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-out',
-		}
+		},
 	);
 	spinBack.cancel();
 

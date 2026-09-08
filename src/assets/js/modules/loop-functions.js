@@ -22,7 +22,7 @@ const changeCover = (element) => {
 
 	if (!MODES.includes(C.mode)) {
 		console.error(
-			`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`
+			`BAD! That's not an available mode, you dingo.\nMode attempted: ${C.mode}`,
 		);
 		return;
 	}
@@ -102,7 +102,7 @@ const showInFooter = (wFile) => {
 	const parts = strippedFile.split('-----');
 	const footerElement = document.querySelector('footer');
 	footerElement.innerHTML = `<p>${unspace(parts[0])} - ${unspace(
-		parts[1]
+		parts[1],
 	)}</p>`;
 };
 

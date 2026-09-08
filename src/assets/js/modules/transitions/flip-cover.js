@@ -18,7 +18,7 @@ const flipCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-in',
-		}
+		},
 	);
 	flipForward.cancel();
 
@@ -32,7 +32,7 @@ const flipCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-out',
-		}
+		},
 	);
 	flipBack.cancel();
 

@@ -86,10 +86,10 @@ const resetSettings = () => {
 	document.querySelector('#settings-transition').value =
 		initialSettings.initialMode;
 	document.querySelector('#settings-duration').value = Number(
-		initialSettings.transitionDuration
+		initialSettings.transitionDuration,
 	);
 	document.querySelector('#settings-delay').value = Number(
-		initialSettings.autoDelay
+		initialSettings.autoDelay,
 	);
 
 	if (loopRestart) {

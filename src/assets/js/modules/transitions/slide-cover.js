@@ -48,7 +48,7 @@ const slideCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-in',
-		}
+		},
 	);
 	slide.cancel();
 

@@ -11,10 +11,13 @@ html {
 }
 
 body {
-	background-image: radial-gradient(#ffcefc 2px, transparent 2px),
+	background-image:
+		radial-gradient(#ffcefc 2px, transparent 2px),
 		radial-gradient(#ffcefc 2px, transparent 2px);
 	background-size: 50px 50px;
-	background-position: 0 0, 25px 25px;
+	background-position:
+		0 0,
+		25px 25px;
 	background-color: #fff;
 	color: #000;
 	font-family: "AtkinsonHyperlegibleNext", "Helvetica", sans-serif;
@@ -42,12 +45,8 @@ div {
 }
 
 main {
-	background: radial-gradient(
-				100% 100% at 100% 100%,
-				#0000 46%,
-				#fff 47% 53%,
-				#0000 54%
-			)
+	background:
+		radial-gradient(100% 100% at 100% 100%, #0000 46%, #fff 47% 53%, #0000 54%)
 			25px 25px,
 		radial-gradient(100% 100% at 0 0, #0000 46%, #fff 47% 53%, #0000 54%) 25px
 			25px,

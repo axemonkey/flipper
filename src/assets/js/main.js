@@ -112,7 +112,7 @@ const setup = () => {
 
 	const vpw = Math.max(
 		document.documentElement.clientWidth || 0,
-		window.innerWidth || 0
+		window.innerWidth || 0,
 	);
 	const vph = document.body.clientHeight;
 	const availWidth = vpw - C.size;
@@ -136,7 +136,7 @@ const setup = () => {
 	C.colCount = Math.floor(C.contHeight / C.size);
 
 	console.log(
-		`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`
+		`availWidth: ${availWidth}, availHeight: ${availHeight}, rowLength: ${rowLength}, colHeight: ${colHeight}`,
 	);
 
 	fillContainer();
@@ -158,10 +158,13 @@ const reset = () => {
 			div.classList.add('resetFadeOut');
 		}
 
-		window.setTimeout(() => {
-			C.resetting = false;
-			setup();
-		}, (C.autoDelay + C.transitionDuration) * 2);
+		window.setTimeout(
+			() => {
+				C.resetting = false;
+				setup();
+			},
+			(C.autoDelay + C.transitionDuration) * 2,
+		);
 	}
 };
 

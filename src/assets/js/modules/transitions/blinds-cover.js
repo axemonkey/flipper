@@ -40,7 +40,7 @@ const blindsCover = (element, wFile) => {
 				iterations: 1,
 				fill: 'forwards',
 				easing: 'ease-in',
-			}
+			},
 		);
 		slatsAnim[index].cancel();
 

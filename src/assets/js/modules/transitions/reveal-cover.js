@@ -34,7 +34,7 @@ const revealCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-in',
-		}
+		},
 	);
 	reveal.cancel();
 

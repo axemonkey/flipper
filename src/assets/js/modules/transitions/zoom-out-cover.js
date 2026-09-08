@@ -33,7 +33,7 @@ const zoomOutCover = (element, wFile) => {
 			iterations: 1,
 			fill: 'forwards',
 			easing: 'ease-in',
-		}
+		},
 	);
 	zoomOut.cancel();
 
